@@ -184,10 +184,7 @@ In order to produce a uniquely identifiable distribution:
 Feedstock Maintainers
 =====================
 
-* [@TobiasFischer](https://github.com/TobiasFischer/)
+* [@Tobias-Fischer](https://github.com/Tobias-Fischer/)
 * [@ameysutavani](https://github.com/ameysutavani/)
 * [@wolfv](https://github.com/wolfv/)
-
-
-<!-- dummy commit to enable rerendering -->
 
