@@ -12,7 +12,7 @@ source:
     - nobuild-examples-timing.patch
     - fix-boost.patch
 build:
-  number: 0
+  number: 1
   skip: True  # [win]
   run_exports:
     - '{{ pin_subpackage(name, max_pin="x.x") }}'
@@ -67,4 +67,4 @@ extra:
   recipe-maintainers:
     - wolfv
     - ameysutavani
-    - TobiasFischer
+    - Tobias-Fischer
