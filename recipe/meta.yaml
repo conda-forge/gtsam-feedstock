@@ -11,6 +11,7 @@ source:
   patches:
     - nobuild-examples-timing.patch
     - fix-boost.patch
+    - unvendor-findboost.patch
 build:
   number: 3
   run_exports:
