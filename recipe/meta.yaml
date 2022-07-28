@@ -13,6 +13,7 @@ source:
     - fix-boost.patch
     - unvendor-findboost.patch
     - fix-tbb.patch
+    - fix-metis-lib.patch
     - fix-copyfile-win.patch  # [win]
 build:
   number: 3
