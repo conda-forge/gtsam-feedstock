@@ -8,12 +8,14 @@ cmake ^
     -DGTSAM_INSTALL_CPPUNITLITE=OFF ^
     -DGTSAM_BUILD_PYTHON=ON ^
     -DBoost_USE_STATIC_LIBS=OFF ^
-    -DBoost_NO_BOOST_CMAKE=ON ^
+    -D BOOST_ROOT="%LIBRARY_PREFIX%" ^
+    -D Boost_NO_SYSTEM_PATHS=ON ^
+    -D Boost_NO_BOOST_CMAKE=ON ^
     -DPython3_EXECUTABLE=%PYTHON% ^
     -DPython_EXECUTABLE=%PYTHON% ^
     -DPYTHON_EXECUTABLE=%PYTHON% ^
     %SRC_DIR%
-    
+
 if errorlevel 1 exit 1
 
 ninja install
