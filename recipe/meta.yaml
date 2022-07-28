@@ -29,6 +29,7 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
   host:
     - python
+    - boost
     - boost-cpp
     - eigen
     - geographiclib-cpp
