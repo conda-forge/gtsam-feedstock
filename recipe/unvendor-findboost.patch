@@ -1,3 +1,18 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 74433f333..001c86b00 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -50,6 +50,10 @@ endif()
+ 
+ include(cmake/HandleGeneralOptions.cmake)   # CMake build options
+ 
++find_package(Boost REQUIRED)
++
++message(WARNING "TEST BOOST: ${Boost_LIBRARIES}")
++
+ # Libraries:
+ include(cmake/HandleBoost.cmake)            # Boost
+ include(cmake/HandleCCache.cmake)           # ccache
 diff --git a/cmake/FindBoost.cmake b/cmake/FindBoost.cmake
 deleted file mode 100644
 index 5f7cb5ddc..000000000
