@@ -12,7 +12,7 @@ source:
     - nobuild-examples-timing.patch
     - fix-boost.patch
 build:
-  number: 2
+  number: 3
   skip: True  # [win]
   run_exports:
     - '{{ pin_subpackage(name, max_pin="x.x") }}'
