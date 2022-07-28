@@ -12,6 +12,7 @@ source:
     - nobuild-examples-timing.patch
     - fix-boost.patch
     - unvendor-findboost.patch
+    - fix-tbb.patch
     - fix-copyfile-win.patch  # [win]
 build:
   number: 3
