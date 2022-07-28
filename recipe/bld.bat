@@ -13,6 +13,7 @@ cmake ^
     -DBOOST_ROOT="%LIBRARY_PREFIX%" ^
     -DBoost_NO_SYSTEM_PATHS=ON ^
     -DGTSAM_CMAKE_CONFIGURATION_TYPES="Release" ^
+    -DCMAKE_BUILD_TYPE="Release" ^
     -DBoost_NO_BOOST_CMAKE=ON ^
     -DPython3_EXECUTABLE=%PYTHON% ^
     -DPython_EXECUTABLE=%PYTHON% ^
