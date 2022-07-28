@@ -1,18 +1,16 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 74433f333..001c86b00 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -50,6 +50,10 @@ endif()
- 
- include(cmake/HandleGeneralOptions.cmake)   # CMake build options
+diff --git a/cmake/HandleBoost.cmake b/cmake/HandleBoost.cmake
+index 6c742cfe5..ee3251781 100644
+--- a/cmake/HandleBoost.cmake
++++ b/cmake/HandleBoost.cmake
+@@ -5,6 +5,8 @@
+ # BOOST_ROOT: path to install prefix for boost
+ # Boost_NO_SYSTEM_PATHS: set to true to keep the find script from ignoring BOOST_ROOT
  
 +find_package(Boost REQUIRED)
 +
-+message(WARNING "TEST BOOST: ${Boost_LIBRARIES}")
-+
- # Libraries:
- include(cmake/HandleBoost.cmake)            # Boost
- include(cmake/HandleCCache.cmake)           # ccache
+ if(MSVC)
+     # By default, boost only builds static libraries on windows
+     set(Boost_USE_STATIC_LIBS ON)  # only find static libs
 diff --git a/cmake/FindBoost.cmake b/cmake/FindBoost.cmake
 deleted file mode 100644
 index 5f7cb5ddc..000000000
