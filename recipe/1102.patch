@@ -24,3 +24,29 @@ index 7a0b08227..d8a3128fa 100644
  
  private:
  
+diff --git a/gtsam/nonlinear/GncOptimizer.h b/gtsam/nonlinear/GncOptimizer.h
+index 3025d2468..d9b4d881d 100644
+--- a/gtsam/nonlinear/GncOptimizer.h
++++ b/gtsam/nonlinear/GncOptimizer.h
+@@ -42,7 +42,7 @@ static double Chi2inv(const double alpha, const size_t dofs) {
+ 
+ /* ************************************************************************* */
+ template<class GncParameters>
+-class GTSAM_EXPORT GncOptimizer {
++class GncOptimizer {
+  public:
+   /// For each parameter, specify the corresponding optimizer: e.g., GaussNewtonParams -> GaussNewtonOptimizer.
+   typedef typename GncParameters::OptimizerType BaseOptimizer;
+diff --git a/gtsam/nonlinear/GncParams.h b/gtsam/nonlinear/GncParams.h
+index 086f08acc..c1bf7a035 100644
+--- a/gtsam/nonlinear/GncParams.h
++++ b/gtsam/nonlinear/GncParams.h
+@@ -39,7 +39,7 @@ enum GncLossType {
+ };
+ 
+ template<class BaseOptimizerParameters>
+-class GTSAM_EXPORT GncParams {
++class GncParams {
+  public:
+   /// For each parameter, specify the corresponding optimizer: e.g., GaussNewtonParams -> GaussNewtonOptimizer.
+   typedef typename BaseOptimizerParameters::OptimizerType OptimizerType;
