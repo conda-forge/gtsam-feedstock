@@ -1,0 +1,26 @@
+diff --git a/gtsam/geometry/PinholeCamera.h b/gtsam/geometry/PinholeCamera.h
+index c1f0b6b3f..8ac67a5c3 100644
+--- a/gtsam/geometry/PinholeCamera.h
++++ b/gtsam/geometry/PinholeCamera.h
+@@ -30,7 +30,7 @@ namespace gtsam {
+  * \nosubgrouping
+  */
+ template<typename Calibration>
+-class GTSAM_EXPORT PinholeCamera: public PinholeBaseK<Calibration> {
++class PinholeCamera: public PinholeBaseK<Calibration> {
+ 
+ public:
+ 
+diff --git a/gtsam/geometry/PinholePose.h b/gtsam/geometry/PinholePose.h
+index 7a0b08227..d8a3128fa 100644
+--- a/gtsam/geometry/PinholePose.h
++++ b/gtsam/geometry/PinholePose.h
+@@ -31,7 +31,7 @@ namespace gtsam {
+  * \nosubgrouping
+  */
+ template<typename CALIBRATION>
+-class GTSAM_EXPORT PinholeBaseK: public PinholeBase {
++class PinholeBaseK: public PinholeBase {
+ 
+ private:
+ 
