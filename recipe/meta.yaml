@@ -15,6 +15,7 @@ source:
     - fix-boost.patch
     - fix-metis-lib.patch
     - fix-eigen.patch
+    - 1102.patch
     - fix-copyfile-win.patch  # [win]
 build:
   number: 3
