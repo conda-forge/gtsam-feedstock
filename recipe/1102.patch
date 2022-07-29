@@ -51,10 +51,18 @@ index 086f08acc..c1bf7a035 100644
    /// For each parameter, specify the corresponding optimizer: e.g., GaussNewtonParams -> GaussNewtonOptimizer.
    typedef typename BaseOptimizerParameters::OptimizerType OptimizerType;
 diff --git a/gtsam_unstable/slam/LocalOrientedPlane3Factor.h b/gtsam_unstable/slam/LocalOrientedPlane3Factor.h
-index 5264c8f4b..ae0c231aa 100644
+index 5264c8f4b..703aead21 100644
 --- a/gtsam_unstable/slam/LocalOrientedPlane3Factor.h
 +++ b/gtsam_unstable/slam/LocalOrientedPlane3Factor.h
-@@ -32,7 +32,7 @@ namespace gtsam {
+@@ -7,6 +7,7 @@
+ 
+ #pragma once
+ 
++#include <gtsam_unstable/dllexport.h>
+ #include <gtsam/geometry/OrientedPlane3.h>
+ #include <gtsam/nonlinear/NonlinearFactor.h>
+ #include <string>
+@@ -32,7 +33,7 @@ namespace gtsam {
   * a local linearisation point for the plane. The plane is representated and
   * optimized in x1 frame in the optimization.
   */
@@ -64,10 +72,18 @@ index 5264c8f4b..ae0c231aa 100644
  protected:
    OrientedPlane3 measured_p_;
 diff --git a/gtsam_unstable/slam/ProjectionFactorRollingShutter.h b/gtsam_unstable/slam/ProjectionFactorRollingShutter.h
-index c92653c13..8aea5ace3 100644
+index c92653c13..2b0de328d 100644
 --- a/gtsam_unstable/slam/ProjectionFactorRollingShutter.h
 +++ b/gtsam_unstable/slam/ProjectionFactorRollingShutter.h
-@@ -40,7 +40,7 @@ namespace gtsam {
+@@ -17,6 +17,7 @@
+ 
+ #pragma once
+ 
++#include <gtsam_unstable/dllexport.h>
+ #include <gtsam/geometry/Cal3_S2.h>
+ #include <gtsam/geometry/CalibratedCamera.h>
+ #include <gtsam/geometry/PinholeCamera.h>
+@@ -40,7 +41,7 @@ namespace gtsam {
   * @addtogroup SLAM
   */
  
@@ -77,10 +93,18 @@ index c92653c13..8aea5ace3 100644
   protected:
    // Keep a copy of measurement and calibration for I/O
 diff --git a/gtsam_unstable/slam/SmartStereoProjectionFactorPP.h b/gtsam_unstable/slam/SmartStereoProjectionFactorPP.h
-index ce6df15cb..fd4ff1c86 100644
+index ce6df15cb..046848973 100644
 --- a/gtsam_unstable/slam/SmartStereoProjectionFactorPP.h
 +++ b/gtsam_unstable/slam/SmartStereoProjectionFactorPP.h
-@@ -40,7 +40,7 @@ namespace gtsam {
+@@ -18,6 +18,7 @@
+ 
+ #pragma once
+ 
++#include <gtsam_unstable/dllexport.h>
+ #include <gtsam_unstable/slam/SmartStereoProjectionFactor.h>
+ 
+ namespace gtsam {
+@@ -40,7 +41,7 @@ namespace gtsam {
   * are Pose3 variables).
   * @addtogroup SLAM
   */
@@ -90,10 +114,18 @@ index ce6df15cb..fd4ff1c86 100644
    /// shared pointer to calibration object (one for each camera)
    std::vector<boost::shared_ptr<Cal3_S2Stereo>> K_all_;
 diff --git a/gtsam_unstable/slam/SmartStereoProjectionPoseFactor.h b/gtsam_unstable/slam/SmartStereoProjectionPoseFactor.h
-index 2a8180ac5..8f3d8d249 100644
+index 2a8180ac5..7103aea24 100644
 --- a/gtsam_unstable/slam/SmartStereoProjectionPoseFactor.h
 +++ b/gtsam_unstable/slam/SmartStereoProjectionPoseFactor.h
-@@ -43,7 +43,7 @@ namespace gtsam {
+@@ -21,6 +21,7 @@
+ 
+ #pragma once
+ 
++#include <gtsam_unstable/dllexport.h>
+ #include <gtsam_unstable/slam/SmartStereoProjectionFactor.h>
+ 
+ namespace gtsam {
+@@ -43,7 +44,7 @@ namespace gtsam {
   * This factor requires that values contains the involved poses (Pose3).
   * @addtogroup SLAM
   */
