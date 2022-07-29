@@ -16,7 +16,7 @@ source:
     - fix-metis-lib.patch
     - fix-eigen.patch
     - 1102.patch
-    - fix-copyfile-win.patch  # [win]
+    - fix-python-build-win.patch  # [win]
 build:
   number: 3
   run_exports:
