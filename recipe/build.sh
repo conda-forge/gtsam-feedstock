@@ -13,6 +13,7 @@ cmake .. ${CMAKE_ARGS} \
         -DPYTHON_EXECUTABLE=$PYTHON
 
 ninja install
+ninja python-install
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]]; then
 ninja check
