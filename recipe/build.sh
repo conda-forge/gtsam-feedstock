@@ -28,7 +28,8 @@ if [ "$(uname)" == "Darwin" ]; then
 else
   export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${PREFIX}/lib"
 fi
-$PYTHON setup.py install --user --prefix=
+$PYTHON -m pip install .
+# $PYTHON setup.py install --user --prefix=
 cd ..
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]]; then
