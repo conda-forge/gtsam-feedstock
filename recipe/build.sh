@@ -32,6 +32,6 @@ $PYTHON -m pip install .
 # $PYTHON setup.py install --user --prefix=
 cd ..
 
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]]; then
-  ninja check
-fi
+# if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]]; then
+#   ninja check
+# fi
