@@ -62,8 +62,8 @@ test:
     - if exist %PREFIX%\\Library\\include\\gtsam\\base\\types.h (exit 0) else (exit 1)  # [win]
     - if exist $PREFIX$\\Library\\lib\\gtsam.lib (exit 0) else (exit 1)  # [win]
     - if exist $PREFIX$\\Library\\bin\\gtsam.dll (exit 0) else (exit 1)  # [win]
-  imports:
-    - gtsam
+  imports:   # [not win]
+    - gtsam  # [not win]
 
 
 about:
