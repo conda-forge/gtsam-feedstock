@@ -45,6 +45,8 @@ requirements:
     - pybind11
     - pyparsing
     - numpy
+    - setuptools
+    - pip
   run:
     - python
     - pyparsing
