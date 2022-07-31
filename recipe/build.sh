@@ -19,15 +19,9 @@ cmake .. ${CMAKE_ARGS} \
         -DPython_EXECUTABLE=$PYTHON \
         -DPYTHON_EXECUTABLE=$PYTHON
 
-ninja install
+ninja install -j2
 
-# ninja python-install
 cd python
-if [ "$(uname)" == "Darwin" ]; then
-  export DYLD_FALLBACK_LIBRARY_PATH="${DYLD_FALLBACK_LIBRARY_PATH}:${PREFIX}/lib"
-else
-  export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${PREFIX}/lib"
-fi
 $PYTHON -m pip install .
 cd ..
 
