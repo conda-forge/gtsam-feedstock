@@ -14,7 +14,7 @@ source:
     - unvendor-findtbb.patch
     - fix-boost.patch
     - fix-metis-lib.patch
-    - fix-eigen.patch
+    # - fix-eigen.patch
     - 1102.patch
     - fix-python-build-win.patch  # [win]
 build:
