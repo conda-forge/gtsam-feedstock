@@ -1,0 +1,50 @@
+diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
+index e2444a51a..9d2c1ed9f 100644
+--- a/python/CMakeLists.txt
++++ b/python/CMakeLists.txt
+@@ -84,6 +84,7 @@ set_target_properties(${GTSAM_PYTHON_TARGET} PROPERTIES
+     INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
+     INSTALL_RPATH_USE_LINK_PATH TRUE
+     OUTPUT_NAME "gtsam"
++    ARCHIVE_OUTPUT_NAME "python_gtsam"
+     LIBRARY_OUTPUT_DIRECTORY "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam"
+     DEBUG_POSTFIX "" # Otherwise you will have a wrong name
+     RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
+@@ -97,10 +98,10 @@ copy_directory("${CMAKE_CURRENT_SOURCE_DIR}/gtsam"
+         "${GTSAM_MODULE_PATH}")
+ 
+ # Hack to get python test files copied every time they are modified
+-file(GLOB GTSAM_PYTHON_TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gtsam/tests/*.py")
+-foreach(test_file ${GTSAM_PYTHON_TEST_FILES})
+-        configure_file(${test_file} "${GTSAM_MODULE_PATH}/tests/${test_file}" COPYONLY)
+-endforeach()
++# file(GLOB GTSAM_PYTHON_TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gtsam/tests/*.py")
++# foreach(test_file ${GTSAM_PYTHON_TEST_FILES})
++#         configure_file(${test_file} "${GTSAM_MODULE_PATH}/tests/${test_file}" COPYONLY)
++# endforeach()
+ 
+ # Common directory for data/datasets stored with the package.
+ # This will store the data in the Python site package directly.
+@@ -147,6 +148,7 @@ if(GTSAM_UNSTABLE_BUILD_PYTHON)
+             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
+             INSTALL_RPATH_USE_LINK_PATH TRUE
+             OUTPUT_NAME "gtsam_unstable"
++            ARCHIVE_OUTPUT_NAME "python_gtsam_unstable"
+             LIBRARY_OUTPUT_DIRECTORY "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam_unstable"
+             DEBUG_POSTFIX "" # Otherwise you will have a wrong name
+             RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
+@@ -159,10 +161,10 @@ if(GTSAM_UNSTABLE_BUILD_PYTHON)
+             "${GTSAM_UNSTABLE_MODULE_PATH}")
+ 
+     # Hack to get python test files copied every time they are modified
+-    file(GLOB GTSAM_UNSTABLE_PYTHON_TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gtsam_unstable/tests/*.py")
+-    foreach(test_file ${GTSAM_PYTHON_TEST_FILES})
+-        configure_file(${test_file} "${GTSAM_UNSTABLE_MODULE_PATH}/tests/${test_file}" COPYONLY)
+-    endforeach()
++    # file(GLOB GTSAM_UNSTABLE_PYTHON_TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gtsam_unstable/tests/*.py")
++    # foreach(test_file ${GTSAM_PYTHON_TEST_FILES})
++    #     configure_file(${test_file} "${GTSAM_UNSTABLE_MODULE_PATH}/tests/${test_file}" COPYONLY)
++    # endforeach()
+ 
+     # Add gtsam_unstable to the install target
+     list(APPEND GTSAM_PYTHON_DEPENDENCIES ${GTSAM_PYTHON_UNSTABLE_TARGET})

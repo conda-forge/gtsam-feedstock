@@ -1,5 +1,7 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '11.0'
+boost:
+- 1.74.0
 boost_cpp:
 - 1.74.0
 c_compiler:
@@ -21,6 +23,8 @@ metis:
 numpy:
 - '1.21'
 pin_run_as_build:
+  boost:
+    max_pin: x.x.x
   boost-cpp:
     max_pin: x.x.x
   metis:
