@@ -12,6 +12,7 @@ source:
     - nobuild-examples-timing.patch
     - unvendor-findboost.patch
     - unvendor-findtbb.patch
+    - unvendor-pybind11.patch
     - fix-boost.patch
     - fix-metis-lib.patch
     - 1102.patch
