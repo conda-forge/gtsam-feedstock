@@ -1,3 +1,14 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2d871424c4..71ba6d7c0a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ project(GTSAM CXX C)
+-cmake_minimum_required(VERSION 3.0)
++cmake_minimum_required(VERSION 3.20)
+ 
+ # new feature to Cmake Version > 2.8.12
+ # Mac ONLY. Define Relative Path on Mac OS
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
 index e2444a51af..4be0acf228 100644
 --- a/python/CMakeLists.txt
