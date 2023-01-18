@@ -1,0 +1,14 @@
+diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
+index e2444a51af..4be0acf228 100644
+--- a/python/CMakeLists.txt
++++ b/python/CMakeLists.txt
+@@ -21,7 +21,8 @@ include(PybindWrap)
+ ## Load the necessary files to compile the wrapper
+ 
+ # Load the pybind11 code
+-add_subdirectory(${PROJECT_SOURCE_DIR}/wrap/pybind11 pybind11)
++# add_subdirectory(${PROJECT_SOURCE_DIR}/wrap/pybind11 pybind11)
++find_package(pybind11)
+ # Set the wrapping script variable
+ set(PYBIND_WRAP_SCRIPT "${PROJECT_SOURCE_DIR}/wrap/scripts/pybind_wrap.py")
+ ############################################################
