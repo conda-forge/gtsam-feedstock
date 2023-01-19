@@ -12,12 +12,13 @@ source:
     - nobuild-examples-timing.patch
     - unvendor-findboost.patch
     - unvendor-findtbb.patch
+    - unvendor-pybind11.patch
     - fix-boost.patch
     - fix-metis-lib.patch
     - 1102.patch
     - fix-python-build-win.patch  # [win]
 build:
-  number: 4
+  number: 5
   run_exports:
     - '{{ pin_subpackage(name, max_pin="x.x") }}'
 

@@ -21,19 +21,17 @@ macos_machine:
 metis:
 - '5.1'
 numpy:
-- '1.19'
+- '1.23'
 pin_run_as_build:
   boost:
     max_pin: x.x.x
   boost-cpp:
     max_pin: x.x.x
-  metis:
-    max_pin: x.x
   python:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.8.* *_cpython
+- 3.11.* *_cpython
 suitesparse:
 - '5'
 target_platform:
