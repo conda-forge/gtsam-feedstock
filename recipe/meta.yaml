@@ -10,13 +10,9 @@ source:
   sha256: 9ff8846d0a83a245c284cb5760ec2d74535ef9b5885183ccfefd7ff122eba60e
   patches:
     - nobuild-examples-timing.patch
-    # - unvendor-findboost.patch
     - unvendor-findtbb.patch
     - unvendor-pybind11.patch
-    # - fix-boost.patch
-    # - fix-metis-lib.patch
-    # - 1102.patch
-    # - fix-python-build-win.patch  # [win]
+    - fix-python-build-win.patch  # [win]
 build:
   number: 0
   run_exports:
