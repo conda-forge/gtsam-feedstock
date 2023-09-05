@@ -2,8 +2,8 @@ mkdir build
 cd build
 
 if [ "$(uname)" == "Darwin" ]; then
-  # skiprpath="-DCMAKE_SKIP_RPATH=TRUE"
-  skiprpath=""
+  skiprpath="-DCMAKE_SKIP_RPATH=TRUE"
+  # skiprpath=""
 else
   skiprpath=""
 fi
