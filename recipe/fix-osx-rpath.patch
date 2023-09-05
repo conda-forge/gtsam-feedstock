@@ -8,10 +8,10 @@ index 79a27f17f..c45f4f072 100644
  set_target_properties(${GTSAM_PYTHON_TARGET} PROPERTIES
 -    INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
 -    INSTALL_RPATH_USE_LINK_PATH TRUE
-+    INSTALL_RPATH "@loader_path/../lib"
-+    INSTALL_RPATH_USE_LINK_PATH FALSE
++    # INSTALL_RPATH "@loader_path/../lib"
++    # INSTALL_RPATH_USE_LINK_PATH FALSE
      OUTPUT_NAME "gtsam"
-+    ARCHIVE_OUTPUT_NAME "python_gtsam"
++    # ARCHIVE_OUTPUT_NAME "python_gtsam"
      LIBRARY_OUTPUT_DIRECTORY "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam"
      DEBUG_POSTFIX "" # Otherwise you will have a wrong name
      RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
@@ -37,10 +37,10 @@ index 79a27f17f..c45f4f072 100644
      set_target_properties(${GTSAM_PYTHON_UNSTABLE_TARGET} PROPERTIES
 -            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
 -            INSTALL_RPATH_USE_LINK_PATH TRUE
-+            INSTALL_RPATH "@loader_path/../lib"
-+            INSTALL_RPATH_USE_LINK_PATH FALSE
++            # INSTALL_RPATH "@loader_path/../lib"
++            # INSTALL_RPATH_USE_LINK_PATH FALSE
              OUTPUT_NAME "gtsam_unstable"
-+            ARCHIVE_OUTPUT_NAME "python_gtsam_unstable"
++            # ARCHIVE_OUTPUT_NAME "python_gtsam_unstable"
              LIBRARY_OUTPUT_DIRECTORY "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam_unstable"
              DEBUG_POSTFIX "" # Otherwise you will have a wrong name
              RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
