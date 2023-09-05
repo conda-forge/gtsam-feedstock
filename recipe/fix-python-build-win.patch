@@ -40,9 +40,9 @@ index 79a27f17f..3c228fd47 100644
  
 +    if(NOT WIN32)
      # Hack to get python test files copied every time they are modified
-am_unstable/tests/*.py")
+     file(GLOB GTSAM_UNSTABLE_PYTHON_TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gtsam_unstable/tests/*.py")
      foreach(test_file ${GTSAM_UNSTABLE_PYTHON_TEST_FILES})
-_file}" COPYONLY)
+         configure_file(${test_file} "${GTSAM_UNSTABLE_MODULE_PATH}/tests/${test_file}" COPYONLY)
      endforeach()
 +    endif()
  
