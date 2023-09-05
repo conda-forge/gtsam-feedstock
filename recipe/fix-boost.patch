@@ -1,0 +1,29 @@
+diff --git a/cmake/HandleBoost.cmake b/cmake/HandleBoost.cmake
+index 6c742cfe5..f2b6c5135 100644
+--- a/cmake/HandleBoost.cmake
++++ b/cmake/HandleBoost.cmake
+@@ -25,7 +25,7 @@ endif()
+ set(BOOST_FIND_MINIMUM_VERSION 1.65)
+ set(BOOST_FIND_MINIMUM_COMPONENTS serialization system filesystem thread program_options date_time timer chrono regex)
+ 
+-find_package(Boost ${BOOST_FIND_MINIMUM_VERSION} COMPONENTS ${BOOST_FIND_MINIMUM_COMPONENTS})
++find_package(Boost)
+ 
+ # Required components
+ if(NOT Boost_SERIALIZATION_LIBRARY OR NOT Boost_SYSTEM_LIBRARY OR NOT Boost_FILESYSTEM_LIBRARY OR
+diff --git a/cmake/Config.cmake.in b/cmake/Config.cmake.in
+index cc2a7df8f..74541ab21 100644
+--- a/cmake/Config.cmake.in
++++ b/cmake/Config.cmake.in
+@@ -16,9 +16,9 @@ endif()
+ include(CMakeFindDependencyMacro)
+ # Allow using cmake < 3.8
+ if(${CMAKE_VERSION} VERSION_LESS "3.8.0")
+-find_package(Boost @BOOST_FIND_MINIMUM_VERSION@ COMPONENTS @BOOST_FIND_MINIMUM_COMPONENTS@)
++find_package(Boost)
+ else()
+-find_dependency(Boost @BOOST_FIND_MINIMUM_VERSION@ COMPONENTS @BOOST_FIND_MINIMUM_COMPONENTS@)
++find_dependency(Boost)
+ endif()
+ 
+ if(@GTSAM_USE_SYSTEM_EIGEN@)
