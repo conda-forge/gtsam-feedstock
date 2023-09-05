@@ -13,6 +13,7 @@ source:
     - unvendor-findtbb.patch
     - unvendor-pybind11.patch
     - fix-python-build-win.patch  # [win]
+    - fix-osx-rpath.patch  # [osx]
 build:
   number: 0
   run_exports:
