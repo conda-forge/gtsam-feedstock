@@ -2,6 +2,15 @@ diff --git a/cmake/HandleBoost.cmake b/cmake/HandleBoost.cmake
 index 6c742cfe5..8a60f9ea3 100644
 --- a/cmake/HandleBoost.cmake
 +++ b/cmake/HandleBoost.cmake
+@@ -7,7 +7,7 @@
+ 
+ if(MSVC)
+     # By default, boost only builds static libraries on windows
+-    set(Boost_USE_STATIC_LIBS ON)  # only find static libs
++    set(Boost_USE_STATIC_LIBS OFF)  # only find static libs
+     # If we ever reset above on windows and, ...
+     # If we use Boost shared libs, disable auto linking.
+     # Some libraries, at least Boost Program Options, rely on this to export DLL symbols.
 @@ -25,13 +25,13 @@ endif()
  set(BOOST_FIND_MINIMUM_VERSION 1.65)
  set(BOOST_FIND_MINIMUM_COMPONENTS serialization system filesystem thread program_options date_time timer chrono regex)
