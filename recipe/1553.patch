@@ -1,0 +1,204 @@
+diff --git a/gtsam/geometry/PinholePose.h b/gtsam/geometry/PinholePose.h
+index b2de4fb11..e5fdd663e 100644
+--- a/gtsam/geometry/PinholePose.h
++++ b/gtsam/geometry/PinholePose.h
+@@ -336,7 +336,7 @@ public:
+   }
+ 
+   /// stream operator
+-  friend std::ostream& operator<<(std::ostream &os, const PinholePose& camera) {
++  GTSAM_EXPORT friend std::ostream& operator<<(std::ostream &os, const PinholePose& camera) {
+     os << "{R: " << camera.pose().rotation().rpy().transpose();
+     os << ", t: " << camera.pose().translation().transpose();
+     if (!camera.K_) os << ", K: none";
+diff --git a/gtsam/geometry/Similarity2.h b/gtsam/geometry/Similarity2.h
+index ad4b82e09..2b1bcdba9 100644
+--- a/gtsam/geometry/Similarity2.h
++++ b/gtsam/geometry/Similarity2.h
+@@ -76,7 +76,7 @@ class GTSAM_EXPORT Similarity2 : public LieGroup<Similarity2, 4> {
+   /// Print with optional string
+   void print(const std::string& s) const;
+ 
+-  friend std::ostream& operator<<(std::ostream& os, const Similarity2& p);
++  GTSAM_EXPORT friend std::ostream& operator<<(std::ostream& os, const Similarity2& p);
+ 
+   /// @}
+   /// @name Group
+diff --git a/gtsam/geometry/Similarity3.h b/gtsam/geometry/Similarity3.h
+index 41d9d9965..9743ade20 100644
+--- a/gtsam/geometry/Similarity3.h
++++ b/gtsam/geometry/Similarity3.h
+@@ -77,7 +77,7 @@ class GTSAM_EXPORT Similarity3 : public LieGroup<Similarity3, 7> {
+   /// Print with optional string
+   void print(const std::string& s) const;
+ 
+-  friend std::ostream& operator<<(std::ostream& os, const Similarity3& p);
++  GTSAM_EXPORT friend std::ostream& operator<<(std::ostream& os, const Similarity3& p);
+ 
+   /// @}
+   /// @name Group
+diff --git a/gtsam/geometry/SphericalCamera.h b/gtsam/geometry/SphericalCamera.h
+index 53b67241f..379450e32 100644
+--- a/gtsam/geometry/SphericalCamera.h
++++ b/gtsam/geometry/SphericalCamera.h
+@@ -232,9 +232,9 @@ class GTSAM_EXPORT SphericalCamera {
+ // end of class SphericalCamera
+ 
+ template <>
+-struct traits<SphericalCamera> : public internal::LieGroup<Pose3> {};
++struct traits<SphericalCamera> : public internal::Manifold<SphericalCamera> {};
+ 
+ template <>
+-struct traits<const SphericalCamera> : public internal::LieGroup<Pose3> {};
++struct traits<const SphericalCamera> : public internal::Manifold<SphericalCamera> {};
+ 
+ }  // namespace gtsam
+diff --git a/gtsam/geometry/Unit3.h b/gtsam/geometry/Unit3.h
+index 2989159a3..f100bde70 100644
+--- a/gtsam/geometry/Unit3.h
++++ b/gtsam/geometry/Unit3.h
+@@ -106,7 +106,7 @@ public:
+   /// @name Testable
+   /// @{
+ 
+-  friend std::ostream& operator<<(std::ostream& os, const Unit3& pair);
++  GTSAM_EXPORT friend std::ostream& operator<<(std::ostream& os, const Unit3& pair);
+ 
+   /// The print fuction
+   void print(const std::string& s = std::string()) const;
+diff --git a/gtsam/linear/IterativeSolver.h b/gtsam/linear/IterativeSolver.h
+index 758d2aec9..a2958ba01 100644
+--- a/gtsam/linear/IterativeSolver.h
++++ b/gtsam/linear/IterativeSolver.h
+@@ -73,7 +73,7 @@ public:
+   GTSAM_EXPORT virtual void print(std::ostream &os) const;
+ 
+   /* for serialization */
+-  friend std::ostream& operator<<(std::ostream &os,
++  GTSAM_EXPORT friend std::ostream& operator<<(std::ostream &os,
+       const IterativeOptimizationParameters &p);
+ 
+   GTSAM_EXPORT static Verbosity verbosityTranslator(const std::string &s);
+diff --git a/gtsam/nonlinear/ISAM2.h b/gtsam/nonlinear/ISAM2.h
+index 6e88079b1..b6b4cb053 100644
+--- a/gtsam/nonlinear/ISAM2.h
++++ b/gtsam/nonlinear/ISAM2.h
+@@ -332,7 +332,7 @@ class GTSAM_EXPORT ISAM2 : public BayesTree<ISAM2Clique> {
+   friend class boost::serialization::access;
+   template<class ARCHIVE>
+   void serialize(ARCHIVE & ar, const unsigned int /*version*/) {
+-      ar & boost::serialization::base_object<BayesTree<ISAM2Clique> >(*this);
++      ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(Base);
+       ar & BOOST_SERIALIZATION_NVP(theta_);
+       ar & BOOST_SERIALIZATION_NVP(variableIndex_);
+       ar & BOOST_SERIALIZATION_NVP(delta_);
+diff --git a/gtsam/nonlinear/tests/testSerializationNonlinear.cpp b/gtsam/nonlinear/tests/testSerializationNonlinear.cpp
+index f402656c1..d6f693a23 100644
+--- a/gtsam/nonlinear/tests/testSerializationNonlinear.cpp
++++ b/gtsam/nonlinear/tests/testSerializationNonlinear.cpp
+@@ -183,7 +183,7 @@ TEST(Serialization, ISAM2) {
+ 
+   std::string binaryPath = "saved_solver.dat";
+   try {
+-    std::ofstream outputStream(binaryPath);
++    std::ofstream outputStream(binaryPath, std::ios::out | std::ios::binary);
+     boost::archive::binary_oarchive outputArchive(outputStream);
+     outputArchive << solver;
+   } catch(...) {
+@@ -192,7 +192,7 @@ TEST(Serialization, ISAM2) {
+ 
+   gtsam::ISAM2 solverFromDisk;
+   try {
+-    std::ifstream ifs(binaryPath);
++    std::ifstream ifs(binaryPath, std::ios::in | std::ios::binary);
+     boost::archive::binary_iarchive inputArchive(ifs);
+     inputArchive >> solverFromDisk;
+   } catch(...) {
+diff --git a/gtsam/nonlinear/tests/testValues.cpp b/gtsam/nonlinear/tests/testValues.cpp
+index 758d9a5a3..3afa547a4 100644
+--- a/gtsam/nonlinear/tests/testValues.cpp
++++ b/gtsam/nonlinear/tests/testValues.cpp
+@@ -588,7 +588,7 @@ TEST(Values, std_move) {
+ TEST(Values, VectorDynamicInsertFixedRead) {
+   Values values;
+   Vector v(3); v << 5.0, 6.0, 7.0;
+-  values.insert(key1, v);
++  values.insert<Vector3>(key1, v);
+   Vector3 expected(5.0, 6.0, 7.0);
+   Vector3 actual = values.at<Vector3>(key1);
+   CHECK(assert_equal(expected, actual));
+@@ -636,7 +636,7 @@ TEST(Values, VectorFixedInsertFixedRead) {
+ TEST(Values, MatrixDynamicInsertFixedRead) {
+   Values values;
+   Matrix v(1,3); v << 5.0, 6.0, 7.0;
+-  values.insert(key1, v);
++  values.insert<Matrix13>(key1, v);
+   Vector3 expected(5.0, 6.0, 7.0);
+   CHECK(assert_equal((Vector)expected, values.at<Matrix13>(key1)));
+   CHECK_EXCEPTION(values.at<Matrix23>(key1), exception);
+@@ -646,7 +646,15 @@ TEST(Values, Demangle) {
+   Values values;
+   Matrix13 v; v << 5.0, 6.0, 7.0;
+   values.insert(key1, v);
+-  string expected = "Values with 1 values:\nValue v1: (Eigen::Matrix<double, 1, 3, 1, 1, 3>)\n[\n      5, 6, 7\n]\n\n";
++#ifdef __GNUG__
++  string expected =
++      "Values with 1 values:\nValue v1: (Eigen::Matrix<double, 1, 3, 1, 1, "
++      "3>)\n[\n        5, 6, 7\n]\n\n";
++#elif _WIN32
++  string expected =
++      "Values with 1 values:\nValue v1: "
++      "(class Eigen::Matrix<double,1,3,1,1,3>)\n[\n    5, 6, 7\n]\n\n";
++#endif
+ 
+   EXPECT(assert_print_equal(expected, values));
+ }
+diff --git a/gtsam/slam/SmartFactorBase.h b/gtsam/slam/SmartFactorBase.h
+index ca158cc1d..eb324d00f 100644
+--- a/gtsam/slam/SmartFactorBase.h
++++ b/gtsam/slam/SmartFactorBase.h
+@@ -161,8 +161,9 @@ protected:
+   /// Collect all cameras: important that in key order.
+   virtual Cameras cameras(const Values& values) const {
+     Cameras cameras;
+-    for(const Key& k: this->keys_)
++    for(const Key& k: this->keys_) {
+       cameras.push_back(values.at<CAMERA>(k));
++    }
+     return cameras;
+   }
+ 
+diff --git a/gtsam_unstable/linear/LP.h b/gtsam_unstable/linear/LP.h
+index fc00c2240..e126d17ff 100644
+--- a/gtsam_unstable/linear/LP.h
++++ b/gtsam_unstable/linear/LP.h
+@@ -29,7 +29,7 @@ namespace gtsam {
+ using namespace std;
+ 
+ /// Mapping between variable's key and its corresponding dimensionality
+-using KeyDimMap = std::map<Key, size_t>;
++using KeyDimMap = std::map<Key, uint32_t>;
+ /*
+  * Iterates through every factor in a linear graph and generates a
+  * mapping between every factor key and it's corresponding dimensionality.
+diff --git a/gtsam_unstable/linear/LPInitSolver.h b/gtsam_unstable/linear/LPInitSolver.h
+index 7e326117b..9db2a34f0 100644
+--- a/gtsam_unstable/linear/LPInitSolver.h
++++ b/gtsam_unstable/linear/LPInitSolver.h
+@@ -19,6 +19,7 @@
+ 
+ #pragma once
+ 
++#include <gtsam_unstable/dllexport.h>
+ #include <gtsam_unstable/linear/LP.h>
+ #include <gtsam/linear/GaussianFactorGraph.h>
+ 
+@@ -49,7 +50,7 @@ namespace gtsam {
+  * inequality constraint, we can't conclude that the problem is infeasible.
+  * However, whether it is infeasible or unbounded, we don't have a unique solution anyway.
+  */
+-class LPInitSolver {
++class GTSAM_UNSTABLE_EXPORT LPInitSolver {
+ private:
+   const LP& lp_;
+ 
