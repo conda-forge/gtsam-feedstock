@@ -15,6 +15,7 @@ source:
     - fix-python-build-win.patch  # [win]
     - fix-boost.patch  # [win]
     - fix-osx-rpath.patch  # [osx]
+    - 1553.patch
 build:
   number: 0
   run_exports:
