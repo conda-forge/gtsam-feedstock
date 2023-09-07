@@ -384,7 +384,7 @@ index ca158cc1d..eb324d00f 100644
    }
  
 diff --git a/gtsam_unstable/linear/LP.h b/gtsam_unstable/linear/LP.h
-index fc00c2240..e126d17ff 100644
+index fc00c2240..7c5b23e9b 100644
 --- a/gtsam_unstable/linear/LP.h
 +++ b/gtsam_unstable/linear/LP.h
 @@ -29,7 +29,7 @@ namespace gtsam {
@@ -396,6 +396,33 @@ index fc00c2240..e126d17ff 100644
  /*
   * Iterates through every factor in a linear graph and generates a
   * mapping between every factor key and it's corresponding dimensionality.
+@@ -81,9 +81,23 @@ public:
+     if (!cachedConstrainedKeyDimMap_.empty())
+       return cachedConstrainedKeyDimMap_;
+     // Collect key-dim map of all variables in the constraints
+-    cachedConstrainedKeyDimMap_ = collectKeyDim(equalities);
+-    KeyDimMap keysDim2 = collectKeyDim(inequalities);
+-    cachedConstrainedKeyDimMap_.insert(keysDim2.begin(), keysDim2.end());
++    //TODO(Varun) seems like the templated function is causing the multiple symbols error on Windows
++    // cachedConstrainedKeyDimMap_ = collectKeyDim(equalities);
++    // KeyDimMap keysDim2 = collectKeyDim(inequalities);
++    // cachedConstrainedKeyDimMap_.insert(keysDim2.begin(), keysDim2.end());
++    cachedConstrainedKeyDimMap_.clear();
++    for (auto&& factor : equalities) {
++      if (!factor) continue;
++      for (Key key : factor->keys()) {
++        cachedConstrainedKeyDimMap_[key] = factor->getDim(factor->find(key));
++      }
++    }
++    for (auto&& factor : inequalities) {
++      if (!factor) continue;
++      for (Key key : factor->keys()) {
++        cachedConstrainedKeyDimMap_[key] = factor->getDim(factor->find(key));
++      }
++    }
+     return cachedConstrainedKeyDimMap_;
+   }
+ 
 diff --git a/gtsam_unstable/linear/LPInitSolver.h b/gtsam_unstable/linear/LPInitSolver.h
 index 7e326117b..9db2a34f0 100644
 --- a/gtsam_unstable/linear/LPInitSolver.h
