@@ -1,3 +1,22 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ebe27443ae..8b56ea9df1 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -32,6 +32,14 @@ set (CMAKE_PROJECT_VERSION_PATCH ${GTSAM_VERSION_PATCH})
+ ###############################################################################
+ # Gather information, perform checks, set defaults
+ 
++if(MSVC)
++  set(MSVC_LINKER_FLAGS "/FORCE:MULTIPLE")
++  set(CMAKE_EXE_LINKER_FLAGS ${MSVC_LINKER_FLAGS})
++  set(CMAKE_MODULE_LINKER_FLAGS ${MSVC_LINKER_FLAGS})
++  set(CMAKE_SHARED_LINKER_FLAGS ${MSVC_LINKER_FLAGS})
++  set(CMAKE_STATIC_LINKER_FLAGS ${MSVC_LINKER_FLAGS})
++endif()
++
+ set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+ include(GtsamMakeConfigFile)
+ include(GNUInstallDirs)
 diff --git a/gtsam/geometry/PinholePose.h b/gtsam/geometry/PinholePose.h
 index b2de4fb11..e5fdd663e 100644
 --- a/gtsam/geometry/PinholePose.h
