@@ -3,7 +3,6 @@ cd build
 
 if [ "$(uname)" == "Darwin" ]; then
   skiprpath="-DCMAKE_SKIP_RPATH=TRUE"
-  # skiprpath=""
 else
   skiprpath=""
 fi
@@ -25,6 +24,11 @@ ninja install -j2
 cd python
 $PYTHON -m pip install .
 cd ..
+
+if [ "$(uname)" == "Darwin" ]; then
+  install_name_tool -change build/gtsam/libgtsam.4.dylib $PREFIX/lib/libgtsam.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.cpython-${PY_VER//.}-darwin.so
+  install_name_tool -change build/gtsam/libgtsam_unstable.4.dylib $PREFIX/lib/libgtsam_unstable.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.cpython-${PY_VER//.}-darwin.so
+fi
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]] && [[ "$(uname)" != "Darwin" ]]; then
   ninja check
