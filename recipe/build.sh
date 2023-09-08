@@ -26,22 +26,20 @@ $PYTHON -m pip install .
 cd ..
 
 if [ "$(uname)" == "Darwin" ]; then
-  # Check before
-  echo "Before updating:"
-  otool -L $PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.cpython-${PY_VER//.}-darwin.so
-  echo "Before updating unstable:"
-  otool -L $PREFIX/lib/python$PY_VER/site-packages/gtsam_unstable/gtsam_unstable.cpython-${PY_VER//.}-darwin.so
+  # Detect Python implementation
+  PYTHON_IMPL=$($PREFIX/bin/python -c "import platform; print(platform.python_implementation())")
 
-  # Run install_name_tool
-  install_name_tool -change $SRC_DIR/build/gtsam/libgtsam.4.dylib $PREFIX/lib/libgtsam.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.cpython-${PY_VER//.}-darwin.so
-  install_name_tool -change $SRC_DIR/build/gtsam/libgtsam.4.dylib $PREFIX/lib/libgtsam.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam_unstable/gtsam_unstable.cpython-${PY_VER//.}-darwin.so
-  install_name_tool -change $SRC_DIR/build/gtsam/libgtsam_unstable.4.dylib $PREFIX/lib/libgtsam_unstable.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam_unstable/gtsam_unstable.cpython-${PY_VER//.}-darwin.so
+  if [ "$PYTHON_IMPL" == "CPython" ]; then
+    SO_SUFFIX="cpython-${PY_VER//.}-darwin.so"
+  elif [ "$PYTHON_IMPL" == "PyPy" ]; then
+    SO_SUFFIX="pypy39-pp73-darwin.so"
+  fi
 
-  # Check after
-  echo "After updating:"
-  otool -L $PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.cpython-${PY_VER//.}-darwin.so
-  echo "After updateing unstable:"
-  otool -L $PREFIX/lib/python$PY_VER/site-packages/gtsam_unstable/gtsam_unstable.cpython-${PY_VER//.}-darwin.so
+  SO_PATH_GTSAM="$PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.$SO_SUFFIX"
+  SO_PATH_UNSTABLE="$PREFIX/lib/python$PY_VER/site-packages/gtsam_unstable/gtsam_unstable.$SO_SUFFIX"
+  install_name_tool -change $SRC_DIR/build/gtsam/libgtsam.4.dylib $PREFIX/lib/libgtsam.4.dylib $SO_PATH_GTSAM
+  install_name_tool -change $SRC_DIR/build/gtsam/libgtsam.4.dylib $PREFIX/lib/libgtsam.4.dylib $SO_PATH_UNSTABLE
+  install_name_tool -change $SRC_DIR/build/gtsam/libgtsam_unstable.4.dylib $PREFIX/lib/libgtsam_unstable.4.dylib $SO_PATH_UNSTABLE
 fi
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]] && [[ "$(uname)" != "Darwin" ]]; then
