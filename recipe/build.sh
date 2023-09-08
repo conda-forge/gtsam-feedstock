@@ -26,8 +26,17 @@ $PYTHON -m pip install .
 cd ..
 
 if [ "$(uname)" == "Darwin" ]; then
+  # Check before
+  echo "Before updating:"
+  otool -L $PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.cpython-${PY_VER//.}-darwin.so
+
+  # Run install_name_tool
   install_name_tool -change build/gtsam/libgtsam.4.dylib $PREFIX/lib/libgtsam.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.cpython-${PY_VER//.}-darwin.so
   install_name_tool -change build/gtsam/libgtsam_unstable.4.dylib $PREFIX/lib/libgtsam_unstable.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.cpython-${PY_VER//.}-darwin.so
+
+  # Check after
+  echo "After updating:"
+  otool -L $PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.cpython-${PY_VER//.}-darwin.so
 fi
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]] && [[ "$(uname)" != "Darwin" ]]; then
