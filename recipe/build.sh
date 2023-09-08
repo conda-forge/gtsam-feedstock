@@ -33,9 +33,9 @@ if [ "$(uname)" == "Darwin" ]; then
   otool -L $PREFIX/lib/python$PY_VER/site-packages/gtsam_unstable/gtsam_unstable.cpython-${PY_VER//.}-darwin.so
 
   # Run install_name_tool
-  install_name_tool -change build/gtsam/libgtsam.4.dylib $PREFIX/lib/libgtsam.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.cpython-${PY_VER//.}-darwin.so
-  install_name_tool -change build/gtsam/libgtsam.4.dylib $PREFIX/lib/libgtsam.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam_unstable/gtsam_unstable.cpython-${PY_VER//.}-darwin.so
-  install_name_tool -change build/gtsam/libgtsam_unstable.4.dylib $PREFIX/lib/libgtsam_unstable.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam_unstable/gtsam_unstable.cpython-${PY_VER//.}-darwin.so
+  install_name_tool -change $SRC_DIR/build/gtsam/libgtsam.4.dylib $PREFIX/lib/libgtsam.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam/gtsam.cpython-${PY_VER//.}-darwin.so
+  install_name_tool -change $SRC_DIR/build/gtsam/libgtsam.4.dylib $PREFIX/lib/libgtsam.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam_unstable/gtsam_unstable.cpython-${PY_VER//.}-darwin.so
+  install_name_tool -change $SRC_DIR/build/gtsam/libgtsam_unstable.4.dylib $PREFIX/lib/libgtsam_unstable.4.dylib $PREFIX/lib/python$PY_VER/site-packages/gtsam_unstable/gtsam_unstable.cpython-${PY_VER//.}-darwin.so
 
   # Check after
   echo "After updating:"
