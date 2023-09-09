@@ -34,14 +34,6 @@ index 79a27f17f..c45f4f072 100644
      LIBRARY_OUTPUT_DIRECTORY "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam"
      DEBUG_POSTFIX "" # Otherwise you will have a wrong name
      RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
-@@ -123,6 +125,7 @@ file(GLOB GTSAM_PYTHON_SPECIALIZATION_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gtsam/s
- foreach(util_file ${GTSAM_PYTHON_SPECIALIZATION_FILES})
-         configure_file(${util_file} "${GTSAM_MODULE_PATH}/specializations/${test_file}" COPYONLY)
- endforeach()
-+endif()
- 
- # Common directory for data/datasets stored with the package.
- # This will store the data in the Python site package directly.
 @@ -170,9 +173,10 @@ if(GTSAM_UNSTABLE_BUILD_PYTHON)
              )
  
