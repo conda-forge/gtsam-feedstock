@@ -47,3 +47,19 @@ index 79a27f17f..c45f4f072 100644
              LIBRARY_OUTPUT_DIRECTORY "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam_unstable"
              DEBUG_POSTFIX "" # Otherwise you will have a wrong name
              RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 309cc7c4ea..63c7f9e547 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,11 +1,5 @@
+ cmake_minimum_required(VERSION 3.0)
+ 
+-# new feature to Cmake Version > 2.8.12
+-# Mac ONLY. Define Relative Path on Mac OS
+-if(NOT DEFINED CMAKE_MACOSX_RPATH)
+-  set(CMAKE_MACOSX_RPATH 0)
+-endif()
+-
+ # Set the version number for the library
+ set (GTSAM_VERSION_MAJOR 4)
+ set (GTSAM_VERSION_MINOR 2)
