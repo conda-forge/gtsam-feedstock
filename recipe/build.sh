@@ -10,6 +10,7 @@ fi
 cmake .. ${CMAKE_ARGS} \
         ${skiprpath} \
         -GNinja \
+        -DCMAKE_MACOSX_RPATH=1 \
         -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF \
         -DGTSAM_USE_SYSTEM_EIGEN=ON \
         -DGTSAM_USE_SYSTEM_METIS=ON \
