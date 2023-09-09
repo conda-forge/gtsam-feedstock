@@ -25,7 +25,7 @@ cd python
 $PYTHON -m pip install .
 cd ..
 
-if [ "$(uname)" == "Darwin" ]; then
+if [ "$(uname)" == "FALSE" ]; then
   # Detect Python implementation
   PYTHON_IMPL=$($PREFIX/bin/python -c "import platform; print(platform.python_implementation())")
 
