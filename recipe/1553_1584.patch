@@ -1,0 +1,484 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ebe27443ae..8b56ea9df1 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -32,6 +32,14 @@ set (CMAKE_PROJECT_VERSION_PATCH ${GTSAM_VERSION_PATCH})
+ ###############################################################################
+ # Gather information, perform checks, set defaults
+ 
++if(MSVC)
++  set(MSVC_LINKER_FLAGS "/FORCE:MULTIPLE")
++  set(CMAKE_EXE_LINKER_FLAGS ${MSVC_LINKER_FLAGS})
++  set(CMAKE_MODULE_LINKER_FLAGS ${MSVC_LINKER_FLAGS})
++  set(CMAKE_SHARED_LINKER_FLAGS ${MSVC_LINKER_FLAGS})
++  set(CMAKE_STATIC_LINKER_FLAGS ${MSVC_LINKER_FLAGS})
++endif()
++
+ set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+ include(GtsamMakeConfigFile)
+ include(GNUInstallDirs)
+diff --git a/gtsam/geometry/PinholePose.h b/gtsam/geometry/PinholePose.h
+index b2de4fb11..e5fdd663e 100644
+--- a/gtsam/geometry/PinholePose.h
++++ b/gtsam/geometry/PinholePose.h
+@@ -336,7 +336,7 @@ public:
+   }
+ 
+   /// stream operator
+-  friend std::ostream& operator<<(std::ostream &os, const PinholePose& camera) {
++  GTSAM_EXPORT friend std::ostream& operator<<(std::ostream &os, const PinholePose& camera) {
+     os << "{R: " << camera.pose().rotation().rpy().transpose();
+     os << ", t: " << camera.pose().translation().transpose();
+     if (!camera.K_) os << ", K: none";
+diff --git a/gtsam/geometry/Pose2.h b/gtsam/geometry/Pose2.h
+index 0ecd95e1c..7fb539e7d 100644
+--- a/gtsam/geometry/Pose2.h
++++ b/gtsam/geometry/Pose2.h
+@@ -33,7 +33,7 @@ namespace gtsam {
+  * @ingroup geometry
+  * \nosubgrouping
+  */
+-class Pose2: public LieGroup<Pose2, 3> {
++class GTSAM_EXPORT Pose2: public LieGroup<Pose2, 3> {
+ 
+ public:
+ 
+@@ -109,10 +109,10 @@ public:
+   /// @{
+ 
+   /** print with optional string */
+-  GTSAM_EXPORT void print(const std::string& s = "") const;
++  void print(const std::string& s = "") const;
+ 
+   /** assert equality up to a tolerance */
+-  GTSAM_EXPORT bool equals(const Pose2& pose, double tol = 1e-9) const;
++  bool equals(const Pose2& pose, double tol = 1e-9) const;
+ 
+   /// @}
+   /// @name Group
+@@ -122,7 +122,7 @@ public:
+   inline static Pose2 Identity() { return Pose2(); }
+ 
+   /// inverse
+-  GTSAM_EXPORT Pose2 inverse() const;
++  Pose2 inverse() const;
+ 
+   /// compose syntactic sugar
+   inline Pose2 operator*(const Pose2& p2) const {
+@@ -134,16 +134,16 @@ public:
+   /// @{
+ 
+   ///Exponential map at identity - create a rotation from canonical coordinates \f$ [T_x,T_y,\theta] \f$
+-  GTSAM_EXPORT static Pose2 Expmap(const Vector3& xi, ChartJacobian H = boost::none);
++  static Pose2 Expmap(const Vector3& xi, ChartJacobian H = boost::none);
+ 
+   ///Log map at identity - return the canonical coordinates \f$ [T_x,T_y,\theta] \f$ of this rotation
+-  GTSAM_EXPORT static Vector3 Logmap(const Pose2& p, ChartJacobian H = boost::none);
++  static Vector3 Logmap(const Pose2& p, ChartJacobian H = boost::none);
+ 
+   /**
+    * Calculate Adjoint map
+    * Ad_pose is 3*3 matrix that when applied to twist xi \f$ [T_x,T_y,\theta] \f$, returns Ad_pose(xi)
+    */
+-  GTSAM_EXPORT Matrix3 AdjointMap() const;
++  Matrix3 AdjointMap() const;
+ 
+   /// Apply AdjointMap to twist xi
+   inline Vector3 Adjoint(const Vector3& xi) const {
+@@ -153,7 +153,7 @@ public:
+   /**
+    * Compute the [ad(w,v)] operator for SE2 as in [Kobilarov09siggraph], pg 19
+    */
+-  GTSAM_EXPORT static Matrix3 adjointMap(const Vector3& v);
++  static Matrix3 adjointMap(const Vector3& v);
+ 
+   /**
+    * Action of the adjointMap on a Lie-algebra vector y, with optional derivatives
+@@ -189,15 +189,15 @@ public:
+   }
+ 
+   /// Derivative of Expmap
+-  GTSAM_EXPORT static Matrix3 ExpmapDerivative(const Vector3& v);
++  static Matrix3 ExpmapDerivative(const Vector3& v);
+ 
+   /// Derivative of Logmap
+-  GTSAM_EXPORT static Matrix3 LogmapDerivative(const Pose2& v);
++  static Matrix3 LogmapDerivative(const Pose2& v);
+ 
+   // Chart at origin, depends on compile-time flag SLOW_BUT_CORRECT_EXPMAP
+   struct ChartAtOrigin {
+-	GTSAM_EXPORT static Pose2 Retract(const Vector3& v, ChartJacobian H = boost::none);
+-	GTSAM_EXPORT static Vector3 Local(const Pose2& r, ChartJacobian H = boost::none);
++	static Pose2 Retract(const Vector3& v, ChartJacobian H = boost::none);
++	static Vector3 Local(const Pose2& r, ChartJacobian H = boost::none);
+   };
+ 
+   using LieGroup<Pose2, 3>::inverse; // version with derivative
+@@ -207,7 +207,7 @@ public:
+   /// @{
+ 
+   /** Return point coordinates in pose coordinate frame */
+-  GTSAM_EXPORT Point2 transformTo(const Point2& point,
++  Point2 transformTo(const Point2& point,
+       OptionalJacobian<2, 3> Dpose = boost::none,
+       OptionalJacobian<2, 2> Dpoint = boost::none) const;
+ 
+@@ -219,7 +219,7 @@ public:
+   Matrix transformTo(const Matrix& points) const;
+ 
+   /** Return point coordinates in global frame */
+-  GTSAM_EXPORT Point2 transformFrom(const Point2& point,
++  Point2 transformFrom(const Point2& point,
+       OptionalJacobian<2, 3> Dpose = boost::none,
+       OptionalJacobian<2, 2> Dpoint = boost::none) const;
+ 
+@@ -261,14 +261,14 @@ public:
+   inline const Rot2&   rotation() const { return r_; }
+ 
+   //// return transformation matrix
+-  GTSAM_EXPORT Matrix3 matrix() const;
++  Matrix3 matrix() const;
+ 
+   /**
+    * Calculate bearing to a landmark
+    * @param point 2D location of landmark
+    * @return 2D rotation \f$ \in SO(2) \f$
+    */
+-  GTSAM_EXPORT Rot2 bearing(const Point2& point,
++  Rot2 bearing(const Point2& point,
+                OptionalJacobian<1, 3> H1=boost::none, OptionalJacobian<1, 2> H2=boost::none) const;
+ 
+   /**
+@@ -276,7 +276,7 @@ public:
+    * @param point SO(2) location of other pose
+    * @return 2D rotation \f$ \in SO(2) \f$
+    */
+-  GTSAM_EXPORT Rot2 bearing(const Pose2& pose,
++  Rot2 bearing(const Pose2& pose,
+                OptionalJacobian<1, 3> H1=boost::none, OptionalJacobian<1, 3> H2=boost::none) const;
+ 
+   /**
+@@ -284,7 +284,7 @@ public:
+    * @param point 2D location of landmark
+    * @return range (double)
+    */
+-  GTSAM_EXPORT double range(const Point2& point,
++  double range(const Point2& point,
+       OptionalJacobian<1, 3> H1=boost::none,
+       OptionalJacobian<1, 2> H2=boost::none) const;
+ 
+@@ -293,7 +293,7 @@ public:
+    * @param point 2D location of other pose
+    * @return range (double)
+    */
+-  GTSAM_EXPORT double range(const Pose2& point,
++  double range(const Pose2& point,
+       OptionalJacobian<1, 3> H1=boost::none,
+       OptionalJacobian<1, 3> H2=boost::none) const;
+ 
+diff --git a/gtsam/geometry/Pose3.h b/gtsam/geometry/Pose3.h
+index 678df8376..39e75bd5d 100644
+--- a/gtsam/geometry/Pose3.h
++++ b/gtsam/geometry/Pose3.h
+@@ -204,7 +204,7 @@ public:
+   static Matrix6 LogmapDerivative(const Pose3& xi);
+ 
+   // Chart at origin, depends on compile-time flag GTSAM_POSE3_EXPMAP
+-  struct ChartAtOrigin {
++  struct GTSAM_EXPORT ChartAtOrigin {
+     static Pose3 Retract(const Vector6& xi, ChartJacobian Hxi = boost::none);
+     static Vector6 Local(const Pose3& pose, ChartJacobian Hpose = boost::none);
+   };
+diff --git a/gtsam/geometry/Similarity2.h b/gtsam/geometry/Similarity2.h
+index ad4b82e09..2b1bcdba9 100644
+--- a/gtsam/geometry/Similarity2.h
++++ b/gtsam/geometry/Similarity2.h
+@@ -76,7 +76,7 @@ class GTSAM_EXPORT Similarity2 : public LieGroup<Similarity2, 4> {
+   /// Print with optional string
+   void print(const std::string& s) const;
+ 
+-  friend std::ostream& operator<<(std::ostream& os, const Similarity2& p);
++  GTSAM_EXPORT friend std::ostream& operator<<(std::ostream& os, const Similarity2& p);
+ 
+   /// @}
+   /// @name Group
+diff --git a/gtsam/geometry/Similarity3.h b/gtsam/geometry/Similarity3.h
+index 41d9d9965..9743ade20 100644
+--- a/gtsam/geometry/Similarity3.h
++++ b/gtsam/geometry/Similarity3.h
+@@ -77,7 +77,7 @@ class GTSAM_EXPORT Similarity3 : public LieGroup<Similarity3, 7> {
+   /// Print with optional string
+   void print(const std::string& s) const;
+ 
+-  friend std::ostream& operator<<(std::ostream& os, const Similarity3& p);
++  GTSAM_EXPORT friend std::ostream& operator<<(std::ostream& os, const Similarity3& p);
+ 
+   /// @}
+   /// @name Group
+diff --git a/gtsam/geometry/SphericalCamera.h b/gtsam/geometry/SphericalCamera.h
+index 53b67241f..379450e32 100644
+--- a/gtsam/geometry/SphericalCamera.h
++++ b/gtsam/geometry/SphericalCamera.h
+@@ -232,9 +232,9 @@ class GTSAM_EXPORT SphericalCamera {
+ // end of class SphericalCamera
+ 
+ template <>
+-struct traits<SphericalCamera> : public internal::LieGroup<Pose3> {};
++struct traits<SphericalCamera> : public internal::Manifold<SphericalCamera> {};
+ 
+ template <>
+-struct traits<const SphericalCamera> : public internal::LieGroup<Pose3> {};
++struct traits<const SphericalCamera> : public internal::Manifold<SphericalCamera> {};
+ 
+ }  // namespace gtsam
+diff --git a/gtsam/geometry/Unit3.h b/gtsam/geometry/Unit3.h
+index 2989159a3..f100bde70 100644
+--- a/gtsam/geometry/Unit3.h
++++ b/gtsam/geometry/Unit3.h
+@@ -106,7 +106,7 @@ public:
+   /// @name Testable
+   /// @{
+ 
+-  friend std::ostream& operator<<(std::ostream& os, const Unit3& pair);
++  GTSAM_EXPORT friend std::ostream& operator<<(std::ostream& os, const Unit3& pair);
+ 
+   /// The print fuction
+   void print(const std::string& s = std::string()) const;
+diff --git a/gtsam/hybrid/HybridFactorGraph.h b/gtsam/hybrid/HybridFactorGraph.h
+index a02d4a212..d7ea72eb4 100644
+--- a/gtsam/hybrid/HybridFactorGraph.h
++++ b/gtsam/hybrid/HybridFactorGraph.h
+@@ -36,7 +36,7 @@ using SharedFactor = boost::shared_ptr<Factor>;
+  * Hybrid Factor Graph
+  * Factor graph with utilities for hybrid factors.
+  */
+-class HybridFactorGraph : public FactorGraph<Factor> {
++class GTSAM_EXPORT HybridFactorGraph : public FactorGraph<Factor> {
+  public:
+   using Base = FactorGraph<Factor>;
+   using This = HybridFactorGraph;              ///< this class
+diff --git a/gtsam/hybrid/HybridSmoother.h b/gtsam/hybrid/HybridSmoother.h
+index 9f14a7002..119d27162 100644
+--- a/gtsam/hybrid/HybridSmoother.h
++++ b/gtsam/hybrid/HybridSmoother.h
+@@ -22,7 +22,7 @@
+ 
+ namespace gtsam {
+ 
+-class HybridSmoother {
++class GTSAM_EXPORT HybridSmoother {
+  private:
+   HybridBayesNet hybridBayesNet_;
+   HybridGaussianFactorGraph remainingFactorGraph_;
+diff --git a/gtsam/inference/Ordering.h b/gtsam/inference/Ordering.h
+index e875ed961..268457e74 100644
+--- a/gtsam/inference/Ordering.h
++++ b/gtsam/inference/Ordering.h
+@@ -31,7 +31,7 @@
+ 
+ namespace gtsam {
+ 
+-class Ordering: public KeyVector {
++class GTSAM_EXPORT Ordering: public KeyVector {
+ protected:
+   typedef KeyVector Base;
+ 
+@@ -46,7 +46,6 @@ public:
+   typedef boost::shared_ptr<This> shared_ptr; ///< shared_ptr to this class
+ 
+   /// Create an empty ordering
+-  GTSAM_EXPORT
+   Ordering() {
+   }
+ 
+@@ -100,7 +99,7 @@ public:
+   }
+ 
+   /// Compute a fill-reducing ordering using COLAMD from a VariableIndex.
+-  static GTSAM_EXPORT Ordering Colamd(const VariableIndex& variableIndex);
++  static Ordering Colamd(const VariableIndex& variableIndex);
+ 
+   /// Compute a fill-reducing ordering using constrained COLAMD from a factor graph (see details
+   /// for note on performance).  This internally builds a VariableIndex so if you already have a
+@@ -125,7 +124,7 @@ public:
+   /// variables in \c constrainLast will be ordered in the same order specified in the KeyVector
+   /// \c constrainLast.   If \c forceOrder is false, the variables in \c constrainLast will be
+   /// ordered after all the others, but will be rearranged by CCOLAMD to reduce fill-in as well.
+-  static GTSAM_EXPORT Ordering ColamdConstrainedLast(
++  static Ordering ColamdConstrainedLast(
+       const VariableIndex& variableIndex, const KeyVector& constrainLast,
+       bool forceOrder = false);
+ 
+@@ -153,7 +152,7 @@ public:
+   /// KeyVector \c constrainFirst.   If \c forceOrder is false, the variables in \c
+   /// constrainFirst will be ordered before all the others, but will be rearranged by CCOLAMD to
+   /// reduce fill-in as well.
+-  static GTSAM_EXPORT Ordering ColamdConstrainedFirst(
++  static Ordering ColamdConstrainedFirst(
+       const VariableIndex& variableIndex,
+       const KeyVector& constrainFirst, bool forceOrder = false);
+ 
+@@ -182,7 +181,7 @@ public:
+   /// appear in \c groups in arbitrary order.  Any variables not present in \c groups will be
+   /// assigned to group 0.  This function simply fills the \c cmember argument to CCOLAMD with the
+   /// supplied indices, see the CCOLAMD documentation for more information.
+-  static GTSAM_EXPORT Ordering ColamdConstrained(
++  static Ordering ColamdConstrained(
+       const VariableIndex& variableIndex, const FastMap<Key, int>& groups);
+ 
+   /// Return a natural Ordering. Typically used by iterative solvers
+@@ -196,11 +195,11 @@ public:
+ 
+   /// METIS Formatting function
+   template<class FACTOR_GRAPH>
+-  static GTSAM_EXPORT void CSRFormat(std::vector<int>& xadj,
++  static void CSRFormat(std::vector<int>& xadj,
+       std::vector<int>& adj, const FACTOR_GRAPH& graph);
+ 
+   /// Compute an ordering determined by METIS from a VariableIndex
+-  static GTSAM_EXPORT Ordering Metis(const MetisIndex& met);
++  static Ordering Metis(const MetisIndex& met);
+ 
+   template<class FACTOR_GRAPH>
+   static Ordering Metis(const FACTOR_GRAPH& graph) {
+@@ -242,18 +241,16 @@ public:
+   /// @name Testable
+   /// @{
+ 
+-  GTSAM_EXPORT
+   void print(const std::string& str = "", const KeyFormatter& keyFormatter =
+       DefaultKeyFormatter) const;
+ 
+-  GTSAM_EXPORT
+   bool equals(const Ordering& other, double tol = 1e-9) const;
+ 
+   /// @}
+ 
+ private:
+   /// Internal COLAMD function
+-  static GTSAM_EXPORT Ordering ColamdConstrained(
++  static Ordering ColamdConstrained(
+       const VariableIndex& variableIndex, std::vector<int>& cmember);
+ 
+   /** Serialization function */
+diff --git a/gtsam/linear/IterativeSolver.h b/gtsam/linear/IterativeSolver.h
+index 758d2aec9..a2958ba01 100644
+--- a/gtsam/linear/IterativeSolver.h
++++ b/gtsam/linear/IterativeSolver.h
+@@ -73,7 +73,7 @@ public:
+   GTSAM_EXPORT virtual void print(std::ostream &os) const;
+ 
+   /* for serialization */
+-  friend std::ostream& operator<<(std::ostream &os,
++  GTSAM_EXPORT friend std::ostream& operator<<(std::ostream &os,
+       const IterativeOptimizationParameters &p);
+ 
+   GTSAM_EXPORT static Verbosity verbosityTranslator(const std::string &s);
+diff --git a/gtsam/nonlinear/ISAM2.h b/gtsam/nonlinear/ISAM2.h
+index 6e88079b1..b6b4cb053 100644
+--- a/gtsam/nonlinear/ISAM2.h
++++ b/gtsam/nonlinear/ISAM2.h
+@@ -332,7 +332,7 @@ class GTSAM_EXPORT ISAM2 : public BayesTree<ISAM2Clique> {
+   friend class boost::serialization::access;
+   template<class ARCHIVE>
+   void serialize(ARCHIVE & ar, const unsigned int /*version*/) {
+-      ar & boost::serialization::base_object<BayesTree<ISAM2Clique> >(*this);
++      ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(Base);
+       ar & BOOST_SERIALIZATION_NVP(theta_);
+       ar & BOOST_SERIALIZATION_NVP(variableIndex_);
+       ar & BOOST_SERIALIZATION_NVP(delta_);
+diff --git a/gtsam/slam/SmartFactorBase.h b/gtsam/slam/SmartFactorBase.h
+index ca158cc1d..eb324d00f 100644
+--- a/gtsam/slam/SmartFactorBase.h
++++ b/gtsam/slam/SmartFactorBase.h
+@@ -161,8 +161,9 @@ protected:
+   /// Collect all cameras: important that in key order.
+   virtual Cameras cameras(const Values& values) const {
+     Cameras cameras;
+-    for(const Key& k: this->keys_)
++    for(const Key& k: this->keys_) {
+       cameras.push_back(values.at<CAMERA>(k));
++    }
+     return cameras;
+   }
+ 
+diff --git a/gtsam_unstable/linear/LP.h b/gtsam_unstable/linear/LP.h
+index fc00c2240..7c5b23e9b 100644
+--- a/gtsam_unstable/linear/LP.h
++++ b/gtsam_unstable/linear/LP.h
+@@ -29,7 +29,7 @@ namespace gtsam {
+ using namespace std;
+ 
+ /// Mapping between variable's key and its corresponding dimensionality
+-using KeyDimMap = std::map<Key, size_t>;
++using KeyDimMap = std::map<Key, uint32_t>;
+ /*
+  * Iterates through every factor in a linear graph and generates a
+  * mapping between every factor key and it's corresponding dimensionality.
+@@ -81,9 +81,23 @@ public:
+     if (!cachedConstrainedKeyDimMap_.empty())
+       return cachedConstrainedKeyDimMap_;
+     // Collect key-dim map of all variables in the constraints
+-    cachedConstrainedKeyDimMap_ = collectKeyDim(equalities);
+-    KeyDimMap keysDim2 = collectKeyDim(inequalities);
+-    cachedConstrainedKeyDimMap_.insert(keysDim2.begin(), keysDim2.end());
++    //TODO(Varun) seems like the templated function is causing the multiple symbols error on Windows
++    // cachedConstrainedKeyDimMap_ = collectKeyDim(equalities);
++    // KeyDimMap keysDim2 = collectKeyDim(inequalities);
++    // cachedConstrainedKeyDimMap_.insert(keysDim2.begin(), keysDim2.end());
++    cachedConstrainedKeyDimMap_.clear();
++    for (auto&& factor : equalities) {
++      if (!factor) continue;
++      for (Key key : factor->keys()) {
++        cachedConstrainedKeyDimMap_[key] = factor->getDim(factor->find(key));
++      }
++    }
++    for (auto&& factor : inequalities) {
++      if (!factor) continue;
++      for (Key key : factor->keys()) {
++        cachedConstrainedKeyDimMap_[key] = factor->getDim(factor->find(key));
++      }
++    }
+     return cachedConstrainedKeyDimMap_;
+   }
+ 
+diff --git a/gtsam_unstable/linear/LPInitSolver.h b/gtsam_unstable/linear/LPInitSolver.h
+index 7e326117b..9db2a34f0 100644
+--- a/gtsam_unstable/linear/LPInitSolver.h
++++ b/gtsam_unstable/linear/LPInitSolver.h
+@@ -19,6 +19,7 @@
+ 
+ #pragma once
+ 
++#include <gtsam_unstable/dllexport.h>
+ #include <gtsam_unstable/linear/LP.h>
+ #include <gtsam/linear/GaussianFactorGraph.h>
+ 
+@@ -49,7 +50,7 @@ namespace gtsam {
+  * inequality constraint, we can't conclude that the problem is infeasible.
+  * However, whether it is infeasible or unbounded, we don't have a unique solution anyway.
+  */
+-class LPInitSolver {
++class GTSAM_UNSTABLE_EXPORT LPInitSolver {
+ private:
+   const LP& lp_;
+ 
+diff --git a/gtsam_unstable/linear/QPSParser.h b/gtsam_unstable/linear/QPSParser.h
+index bd4254d0f..e751f34d2 100644
+--- a/gtsam_unstable/linear/QPSParser.h
++++ b/gtsam_unstable/linear/QPSParser.h
+@@ -18,12 +18,13 @@
+ 
+ #pragma once
+ 
++#include <gtsam_unstable/dllexport.h>
+ #include <gtsam_unstable/linear/QP.h>
+ #include <fstream>
+ 
+ namespace gtsam {
+ 
+-class QPSParser {
++class GTSAM_UNSTABLE_EXPORT QPSParser {
+ 
+ private:
+   std::string fileName_;

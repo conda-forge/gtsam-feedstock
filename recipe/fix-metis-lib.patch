@@ -1,8 +1,0 @@
-diff --git a/gtsam_unstable/partition/tests/CMakeLists.txt b/gtsam_unstable/partition/tests/CMakeLists.txt
-index 9e74d9996..d89a1fe98 100644
---- a/gtsam_unstable/partition/tests/CMakeLists.txt
-+++ b/gtsam_unstable/partition/tests/CMakeLists.txt
-@@ -1,2 +1,2 @@
- set(ignore_test "testNestedDissection.cpp")
--gtsamAddTestsGlob(partition "test*.cpp" "${ignore_test}" "gtsam_unstable;gtsam;metis-gtsam")
-+gtsamAddTestsGlob(partition "test*.cpp" "${ignore_test}" "gtsam_unstable;gtsam;metis-gtsam-if")

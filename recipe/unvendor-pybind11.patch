@@ -1,11 +1,10 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d871424c4..71ba6d7c0a 100644
+index 8b56ea9df1..1dd747e1e9 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -1,5 +1,5 @@
- project(GTSAM CXX C)
+@@ -1,4 +1,4 @@
 -cmake_minimum_required(VERSION 3.0)
-+cmake_minimum_required(VERSION 3.3)
++cmake_minimum_required(VERSION 3.20)
  
  # new feature to Cmake Version > 2.8.12
  # Mac ONLY. Define Relative Path on Mac OS
@@ -23,3 +22,16 @@ index e2444a51af..4be0acf228 100644
  # Set the wrapping script variable
  set(PYBIND_WRAP_SCRIPT "${PROJECT_SOURCE_DIR}/wrap/scripts/pybind_wrap.py")
  ############################################################
+diff --git a/wrap/CMakeLists.txt b/wrap/CMakeLists.txt
+index 2a11a760d..4465e0f45 100644
+--- a/wrap/CMakeLists.txt
++++ b/wrap/CMakeLists.txt
+@@ -66,7 +66,7 @@ install(DIRECTORY gtwrap DESTINATION "${GTWRAP_LIB_INSTALL_DIR}")
+ 
+ # Install pybind11 directory to `CMAKE_INSTALL_PREFIX/lib/gtwrap/pybind11` This
+ # will allow the gtwrapConfig.cmake file to load it later.
+-install(DIRECTORY pybind11 DESTINATION "${GTWRAP_LIB_INSTALL_DIR}")
++# install(DIRECTORY pybind11 DESTINATION "${GTWRAP_LIB_INSTALL_DIR}")
+ 
+ # Install wrapping scripts as binaries to `CMAKE_INSTALL_PREFIX/bin` so they can
+ # be invoked for wrapping. We use DESTINATION (instead of TYPE) so we can

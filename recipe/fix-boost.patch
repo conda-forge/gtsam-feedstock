@@ -1,36 +1,48 @@
-diff --git a/gtsam/base/serialization.h b/gtsam/base/serialization.h
-index 24355c684..e615afe83 100644
---- a/gtsam/base/serialization.h
-+++ b/gtsam/base/serialization.h
-@@ -25,6 +25,7 @@
- #include <string>
+diff --git a/cmake/HandleBoost.cmake b/cmake/HandleBoost.cmake
+index 6c742cfe5..8a60f9ea3 100644
+--- a/cmake/HandleBoost.cmake
++++ b/cmake/HandleBoost.cmake
+@@ -7,7 +7,7 @@
  
- // includes for standard serialization types
-+#include <boost/serialization/version.hpp>
- #include <boost/serialization/optional.hpp>
- #include <boost/serialization/shared_ptr.hpp>
- #include <boost/serialization/vector.hpp>
-diff --git a/gtsam/linear/NoiseModel.h b/gtsam/linear/NoiseModel.h
-index 54b9d955f..a737c5cc8 100644
---- a/gtsam/linear/NoiseModel.h
-+++ b/gtsam/linear/NoiseModel.h
-@@ -27,6 +27,7 @@
- #include <boost/serialization/extended_type_info.hpp>
- #include <boost/serialization/singleton.hpp>
- #include <boost/serialization/shared_ptr.hpp>
-+#include <boost/serialization/version.hpp>
- #include <boost/serialization/optional.hpp>
+ if(MSVC)
+     # By default, boost only builds static libraries on windows
+-    set(Boost_USE_STATIC_LIBS ON)  # only find static libs
++    set(Boost_USE_STATIC_LIBS OFF)  # only find static libs
+     # If we ever reset above on windows and, ...
+     # If we use Boost shared libs, disable auto linking.
+     # Some libraries, at least Boost Program Options, rely on this to export DLL symbols.
+@@ -25,13 +25,13 @@ endif()
+ set(BOOST_FIND_MINIMUM_VERSION 1.65)
+ set(BOOST_FIND_MINIMUM_COMPONENTS serialization system filesystem thread program_options date_time timer chrono regex)
  
- namespace gtsam {
-diff --git a/gtsam/slam/SmartFactorBase.h b/gtsam/slam/SmartFactorBase.h
-index ddf56b289..f128bd124 100644
---- a/gtsam/slam/SmartFactorBase.h
-+++ b/gtsam/slam/SmartFactorBase.h
-@@ -30,6 +30,7 @@
- #include <gtsam/geometry/CameraSet.h>
+-find_package(Boost ${BOOST_FIND_MINIMUM_VERSION} COMPONENTS ${BOOST_FIND_MINIMUM_COMPONENTS})
++find_package(Boost COMPONENTS ${BOOST_FIND_MINIMUM_COMPONENTS})
  
- #include <boost/optional.hpp>
-+#include <boost/serialization/version.hpp>
- #include <boost/serialization/optional.hpp>
- #include <boost/make_shared.hpp>
- #include <vector>
+ # Required components
+-if(NOT Boost_SERIALIZATION_LIBRARY OR NOT Boost_SYSTEM_LIBRARY OR NOT Boost_FILESYSTEM_LIBRARY OR
+-    NOT Boost_THREAD_LIBRARY OR NOT Boost_DATE_TIME_LIBRARY)
+-  message(FATAL_ERROR "Missing required Boost components >= v1.65, please install/upgrade Boost or configure your search paths.")
+-endif()
++# if(NOT Boost_SERIALIZATION_LIBRARY OR NOT Boost_SYSTEM_LIBRARY OR NOT Boost_FILESYSTEM_LIBRARY OR
++#     NOT Boost_THREAD_LIBRARY OR NOT Boost_DATE_TIME_LIBRARY)
++#   message(FATAL_ERROR "Missing required Boost components >= v1.65, please install/upgrade Boost or configure your search paths.")
++# endif()
+ 
+ option(GTSAM_DISABLE_NEW_TIMERS "Disables using Boost.chrono for timing" OFF)
+ # Allow for not using the timer libraries on boost < 1.48 (GTSAM timing code falls back to old timer library)
+diff --git a/cmake/Config.cmake.in b/cmake/Config.cmake.in
+index cc2a7df8f..74541ab21 100644
+--- a/cmake/Config.cmake.in
++++ b/cmake/Config.cmake.in
+@@ -16,9 +16,9 @@ endif()
+ include(CMakeFindDependencyMacro)
+ # Allow using cmake < 3.8
+ if(${CMAKE_VERSION} VERSION_LESS "3.8.0")
+-find_package(Boost @BOOST_FIND_MINIMUM_VERSION@ COMPONENTS @BOOST_FIND_MINIMUM_COMPONENTS@)
++find_package(Boost COMPONENTS @BOOST_FIND_MINIMUM_COMPONENTS@)
+ else()
+-find_dependency(Boost @BOOST_FIND_MINIMUM_VERSION@ COMPONENTS @BOOST_FIND_MINIMUM_COMPONENTS@)
++find_dependency(Boost COMPONENTS @BOOST_FIND_MINIMUM_COMPONENTS@)
+ endif()
+ 
+ if(@GTSAM_USE_SYSTEM_EIGEN@)

@@ -1,0 +1,49 @@
+diff --git a/cmake/HandleGlobalBuildFlags.cmake b/cmake/HandleGlobalBuildFlags.cmake
+index f33e12b94..663928a19 100644
+--- a/cmake/HandleGlobalBuildFlags.cmake
++++ b/cmake/HandleGlobalBuildFlags.cmake
+@@ -18,10 +18,10 @@ if(MSVC AND BUILD_SHARED_LIBS)
+     list_append_cache(GTSAM_COMPILE_DEFINITIONS_PUBLIC EIGEN_NO_STATIC_ASSERT)
+ endif()
+ 
+-if (APPLE AND BUILD_SHARED_LIBS)
+-    # Set the default install directory on macOS
+-    set(CMAKE_INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+-endif()
++# if (APPLE AND BUILD_SHARED_LIBS)
++#     # Set the default install directory on macOS
++#     set(CMAKE_INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
++# endif()
+ 
+ ###############################################################################
+ # Global compile options
+diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
+index 79a27f17f..c45f4f072 100644
+--- a/python/CMakeLists.txt
++++ b/python/CMakeLists.txt
+@@ -90,9 +90,10 @@ pybind_wrap(${GTSAM_PYTHON_TARGET} # target
+             )
+ 
+ set_target_properties(${GTSAM_PYTHON_TARGET} PROPERTIES
+-    INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
+-    INSTALL_RPATH_USE_LINK_PATH TRUE
++    # INSTALL_RPATH "@loader_path/../lib"
++    # INSTALL_RPATH_USE_LINK_PATH FALSE
+     OUTPUT_NAME "gtsam"
++    # ARCHIVE_OUTPUT_NAME "python_gtsam"
+     LIBRARY_OUTPUT_DIRECTORY "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam"
+     DEBUG_POSTFIX "" # Otherwise you will have a wrong name
+     RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
+@@ -170,9 +173,10 @@ if(GTSAM_UNSTABLE_BUILD_PYTHON)
+             )
+ 
+     set_target_properties(${GTSAM_PYTHON_UNSTABLE_TARGET} PROPERTIES
+-            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
+-            INSTALL_RPATH_USE_LINK_PATH TRUE
++            # INSTALL_RPATH "@loader_path/../lib"
++            # INSTALL_RPATH_USE_LINK_PATH FALSE
+             OUTPUT_NAME "gtsam_unstable"
++            # ARCHIVE_OUTPUT_NAME "python_gtsam_unstable"
+             LIBRARY_OUTPUT_DIRECTORY "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam_unstable"
+             DEBUG_POSTFIX "" # Otherwise you will have a wrong name
+             RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
