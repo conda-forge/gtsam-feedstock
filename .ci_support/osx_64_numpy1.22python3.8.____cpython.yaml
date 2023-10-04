@@ -1,9 +1,5 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
-boost:
-- 1.78.0
-boost_cpp:
-- 1.78.0
 c_compiler:
 - clang
 c_compiler_version:
@@ -16,6 +12,10 @@ cxx_compiler:
 - clangxx
 cxx_compiler_version:
 - '15'
+libboost_devel:
+- '1.82'
+libboost_python_devel:
+- '1.82'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 metis:
@@ -23,10 +23,6 @@ metis:
 numpy:
 - '1.22'
 pin_run_as_build:
-  boost:
-    max_pin: x.x.x
-  boost-cpp:
-    max_pin: x.x.x
   python:
     min_pin: x.x
     max_pin: x.x
