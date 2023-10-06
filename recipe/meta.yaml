@@ -16,6 +16,7 @@ source:
     - fix-boost.patch  # [win]
     - fix-osx-rpath.patch  # [osx]
     - 1553_1584.patch
+    - include_bitset.patch
 build:
   number: 1
   run_exports:
