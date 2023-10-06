@@ -1,0 +1,22 @@
+From 05f741e08361b55a212adf197cb211275e58ab32 Mon Sep 17 00:00:00 2001
+From: Varun Agrawal <varagrawal@gmail.com>
+Date: Wed, 1 Mar 2023 16:25:44 -0500
+Subject: [PATCH] include bitset header
+
+---
+ gtsam/hybrid/tests/testHybridEstimation.cpp | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/gtsam/hybrid/tests/testHybridEstimation.cpp b/gtsam/hybrid/tests/testHybridEstimation.cpp
+index c917ffff9f..f41bee103e 100644
+--- a/gtsam/hybrid/tests/testHybridEstimation.cpp
++++ b/gtsam/hybrid/tests/testHybridEstimation.cpp
+@@ -36,6 +36,8 @@
+ // Include for test suite
+ #include <CppUnitLite/TestHarness.h>
+ 
++#include <bitset>
++
+ #include "Switching.h"
+ 
+ using namespace std;
