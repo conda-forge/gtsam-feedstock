@@ -23,7 +23,7 @@ cmake ^
 
 if errorlevel 1 exit 1
 
-ninja install -j2
+ninja install -j1
 @rem ninja python-install
 
 if errorlevel 1 exit 1
