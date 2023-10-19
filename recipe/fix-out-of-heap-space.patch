@@ -7,7 +7,7 @@ index 5bad53988..e4dc07c1f 100644
  set (CMAKE_PROJECT_VERSION_PATCH ${GTSAM_VERSION_PATCH})
  
 +if(MSVC)
-+  add_compile_options(/Zm200)
++  add_compile_options(/Zm1000)
 +endif()
 +
  ###############################################################################
