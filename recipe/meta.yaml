@@ -18,6 +18,7 @@ source:
     - 1553_1584.patch
     - include_bitset.patch
     - fix-out-of-heap-space.patch
+    - fix-gtsam-export-4.2.0.patch
 build:
   number: 1
   run_exports:
