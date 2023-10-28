@@ -20,12 +20,13 @@ cmake ^
     -DPython_EXECUTABLE=%PYTHON% ^
     -DPYTHON_EXECUTABLE=%PYTHON% ^
     %SRC_DIR%
-
 if errorlevel 1 exit 1
 
 ninja install -j1
-@rem ninja python-install
-
 if errorlevel 1 exit 1
 
+cd python
+python -m pip install .
+if errorlevel 1 exit 1
+cd ..
 @rem ninja check
