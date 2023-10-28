@@ -1,0 +1,37 @@
+diff --git a/gtsam/slam/SmartFactorBase.h b/gtsam/slam/SmartFactorBase.h
+index ca158cc1d..3868cd210 100644
+--- a/gtsam/slam/SmartFactorBase.h
++++ b/gtsam/slam/SmartFactorBase.h
+@@ -161,8 +161,9 @@ protected:
+   /// Collect all cameras: important that in key order.
+   virtual Cameras cameras(const Values& values) const {
+     Cameras cameras;
+-    for(const Key& k: this->keys_)
++    for(const Key& k: this->keys_) {
+       cameras.push_back(values.at<CAMERA>(k));
++    }
+     return cameras;
+   }
+ 
+@@ -322,7 +323,7 @@ protected:
+     computeJacobians(Fs, E, b, cameras, point);
+ 
+     // build augmented hessian
+-    SymmetricBlockMatrix augmentedHessian = Cameras::SchurComplement(Fs, E, b);
++    SymmetricBlockMatrix augmentedHessian = Cameras::SchurComplement<Dim>(Fs, E, b);
+ 
+     return boost::make_shared<RegularHessianFactor<Dim> >(keys_,
+         augmentedHessian);
+diff --git a/gtsam/slam/SmartProjectionFactor.h b/gtsam/slam/SmartProjectionFactor.h
+index f9c101cb8..5ed0ea77f 100644
+--- a/gtsam/slam/SmartProjectionFactor.h
++++ b/gtsam/slam/SmartProjectionFactor.h
+@@ -231,7 +231,7 @@ protected:
+ 
+     // build augmented hessian
+     SymmetricBlockMatrix augmentedHessian =  //
+-        Cameras::SchurComplement(Fs, E, b, lambda, diagonalDamping);
++        Cameras::SchurComplement<Base::Dim>(Fs, E, b, lambda, diagonalDamping);
+ 
+     return boost::make_shared<RegularHessianFactor<Base::Dim> >(
+         this->keys_, augmentedHessian);
