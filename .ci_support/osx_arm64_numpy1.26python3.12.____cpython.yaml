@@ -1,5 +1,5 @@
 MACOSX_DEPLOYMENT_TARGET:
-- '10.13'
+- '11.0'
 c_compiler:
 - clang
 c_compiler_version:
@@ -15,23 +15,21 @@ cxx_compiler_version:
 libboost_devel:
 - '1.82'
 macos_machine:
-- x86_64-apple-darwin13.4.0
-macos_min_version:
-- '10.13'
+- arm64-apple-darwin20.0.0
 metis:
 - '5.1'
 numpy:
-- '1.22'
+- '1.26'
 pin_run_as_build:
   python:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.9.* *_73_pypy
+- 3.12.* *_cpython
 suitesparse:
 - '5'
 target_platform:
-- osx-64
+- osx-arm64
 tbb:
 - '2021'
 tbb_devel:

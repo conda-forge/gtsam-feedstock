@@ -1,9 +1,9 @@
 MACOSX_DEPLOYMENT_TARGET:
-- '10.9'
+- '10.13'
 c_compiler:
 - clang
 c_compiler_version:
-- '15'
+- '16'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -11,13 +11,13 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '15'
+- '16'
 libboost_devel:
-- '1.82'
-libboost_python_devel:
 - '1.82'
 macos_machine:
 - x86_64-apple-darwin13.4.0
+macos_min_version:
+- '10.13'
 metis:
 - '5.1'
 numpy:
