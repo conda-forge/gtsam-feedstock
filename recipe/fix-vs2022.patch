@@ -33,7 +33,7 @@ index 61f110d3a..3e0e977df 100644
      // build augmented hessian
      SymmetricBlockMatrix augmentedHessian = //
 -        Cameras::SchurComplement(Fs, E, b, lambda, diagonalDamping);
-+        Cameras::SchurComplement<Base::Dim>(Fs, E, b, lambda, diagonalDamping);
++        Cameras::SchurComplement(Fs, E, b, lambda, diagonalDamping);
  
      return boost::make_shared<RegularHessianFactor<Base::Dim> >(this->keys_,
          augmentedHessian);
