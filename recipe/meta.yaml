@@ -19,6 +19,7 @@ source:
     - include_bitset.patch
     - fix-out-of-heap-space.patch
     - fix-gtsam-export-4.2.0.patch
+    - fix-vs2022.patch
 build:
   number: 2
   run_exports:
