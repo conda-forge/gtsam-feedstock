@@ -1,3 +1,24 @@
+diff --git a/gtsam/base/utilities.h b/gtsam/base/utilities.h
+index 0a05a704c..97457e326 100644
+--- a/gtsam/base/utilities.h
++++ b/gtsam/base/utilities.h
+@@ -3,6 +3,7 @@
+ #include <string>
+ #include <iostream>
+ #include <sstream>
++#include <gtsam/dllexport.h>
+ 
+ namespace gtsam {
+ /**
+@@ -11,7 +12,7 @@ namespace gtsam {
+  * of an object when it prints to cout.
+  * https://stackoverflow.com/questions/5419356/redirect-stdout-stderr-to-a-string
+  */
+-struct RedirectCout {
++struct GTSAM_EXPORT RedirectCout {
+   /// constructor -- redirect stdout buffer to a stringstream buffer
+   RedirectCout() : ssBuffer_(), coutBuffer_(std::cout.rdbuf(ssBuffer_.rdbuf())) {}
+ 
 diff --git a/gtsam/discrete/DiscreteValues.h b/gtsam/discrete/DiscreteValues.h
 index 9ec08302b..9fdff014c 100644
 --- a/gtsam/discrete/DiscreteValues.h
