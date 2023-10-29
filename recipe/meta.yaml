@@ -17,8 +17,10 @@ source:
     - fix-osx-rpath.patch  # [osx]
     - 1553_1584.patch
     - include_bitset.patch
+    - fix-gtsam-export-4.2.0.patch
+    - fix-gtsam-unstable-export-4.2.0.patch
 build:
-  number: 2
+  number: 3
   run_exports:
     - '{{ pin_subpackage(name, max_pin="x.x") }}'
 
@@ -60,8 +62,8 @@ test:
     - if exist %PREFIX%\\Library\\include\\gtsam\\base\\types.h (exit 0) else (exit 1)  # [win]
     - if exist $PREFIX$\\Library\\lib\\gtsam.lib (exit 0) else (exit 1)  # [win]
     - if exist $PREFIX$\\Library\\bin\\gtsam.dll (exit 0) else (exit 1)  # [win]
-  imports:   # [not win]
-    - gtsam  # [not win]
+  imports:
+    - gtsam
 
 
 about:

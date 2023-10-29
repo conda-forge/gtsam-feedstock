@@ -1,0 +1,79 @@
+diff --git a/gtsam/base/utilities.h b/gtsam/base/utilities.h
+index 0a05a704c..97457e326 100644
+--- a/gtsam/base/utilities.h
++++ b/gtsam/base/utilities.h
+@@ -3,6 +3,7 @@
+ #include <string>
+ #include <iostream>
+ #include <sstream>
++#include <gtsam/dllexport.h>
+ 
+ namespace gtsam {
+ /**
+@@ -11,7 +12,7 @@ namespace gtsam {
+  * of an object when it prints to cout.
+  * https://stackoverflow.com/questions/5419356/redirect-stdout-stderr-to-a-string
+  */
+-struct RedirectCout {
++struct GTSAM_EXPORT RedirectCout {
+   /// constructor -- redirect stdout buffer to a stringstream buffer
+   RedirectCout() : ssBuffer_(), coutBuffer_(std::cout.rdbuf(ssBuffer_.rdbuf())) {}
+ 
+diff --git a/gtsam/discrete/DiscreteValues.h b/gtsam/discrete/DiscreteValues.h
+index 9ec08302b..9fdff014c 100644
+--- a/gtsam/discrete/DiscreteValues.h
++++ b/gtsam/discrete/DiscreteValues.h
+@@ -126,12 +126,12 @@ inline std::vector<DiscreteValues> cartesianProduct(const DiscreteKeys& keys) {
+ }
+ 
+ /// Free version of markdown.
+-std::string markdown(const DiscreteValues& values,
++std::string GTSAM_EXPORT markdown(const DiscreteValues& values,
+                      const KeyFormatter& keyFormatter = DefaultKeyFormatter,
+                      const DiscreteValues::Names& names = {});
+ 
+ /// Free version of html.
+-std::string html(const DiscreteValues& values,
++std::string GTSAM_EXPORT html(const DiscreteValues& values,
+                  const KeyFormatter& keyFormatter = DefaultKeyFormatter,
+                  const DiscreteValues::Names& names = {});
+ 
+diff --git a/gtsam/nonlinear/CustomFactor.h b/gtsam/nonlinear/CustomFactor.h
+index 8580a4949..c76f65014 100644
+--- a/gtsam/nonlinear/CustomFactor.h
++++ b/gtsam/nonlinear/CustomFactor.h
+@@ -23,7 +23,7 @@ namespace gtsam {
+ 
+ using JacobianVector = std::vector<Matrix>;
+ 
+-class CustomFactor;
++class GTSAM_EXPORT CustomFactor;
+ 
+ /*
+  * NOTE
+diff --git a/gtsam/sfm/DsfTrackGenerator.h b/gtsam/sfm/DsfTrackGenerator.h
+index 74d45207e..9e3cb6687 100644
+--- a/gtsam/sfm/DsfTrackGenerator.h
++++ b/gtsam/sfm/DsfTrackGenerator.h
+@@ -70,7 +70,7 @@ using MatchIndicesMap = std::map<IndexPair, CorrespondenceIndices>;
+  *        correspondence indices, from each image.
+  * @param Length-N list of keypoints, for N images/cameras.
+  */
+-std::vector<SfmTrack2d> tracksFromPairwiseMatches(
++std::vector<SfmTrack2d> GTSAM_EXPORT tracksFromPairwiseMatches(
+     const MatchIndicesMap& matches, const KeypointsVector& keypoints,
+     bool verbose = false);
+ 
+diff --git a/gtsam/sfm/TranslationRecovery.h b/gtsam/sfm/TranslationRecovery.h
+index 44a5ef43e..4848d7cfa 100644
+--- a/gtsam/sfm/TranslationRecovery.h
++++ b/gtsam/sfm/TranslationRecovery.h
+@@ -48,7 +48,7 @@ namespace gtsam {
+ // where s is an arbitrary scale that can be supplied, default 1.0. Hence, two
+ // versions are supplied below corresponding to whether we have initial values
+ // or not.
+-class TranslationRecovery {
++class GTSAM_EXPORT TranslationRecovery {
+  public:
+   using KeyPair = std::pair<Key, Key>;
+   using TranslationEdges = std::vector<BinaryMeasurement<Unit3>>;

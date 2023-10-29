@@ -1,0 +1,13 @@
+diff --git a/gtsam_unstable/slam/ProjectionFactorPPPC.h b/gtsam_unstable/slam/ProjectionFactorPPPC.h
+index dec893af4..d01c03011 100644
+--- a/gtsam_unstable/slam/ProjectionFactorPPPC.h
++++ b/gtsam_unstable/slam/ProjectionFactorPPPC.h
+@@ -33,7 +33,7 @@ namespace gtsam {
+    * @ingroup slam
+    */
+ template <class POSE, class LANDMARK, class CALIBRATION = Cal3_S2>
+-class GTSAM_UNSTABLE_EXPORT ProjectionFactorPPPC
++class ProjectionFactorPPPC
+     : public NoiseModelFactorN<POSE, POSE, LANDMARK, CALIBRATION> {
+  protected:
+   Point2 measured_;  ///< 2D measurement
