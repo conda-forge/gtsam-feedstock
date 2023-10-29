@@ -3,9 +3,6 @@ cd build
 
 cmake ^
     -GNinja ^
-    -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=%LIBRARY_LIB% ^
-    -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=%LIBRARY_BIN% ^
-    -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=%LIBRARY_LIB% ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
     -DGTSAM_BUILD_UNSTABLE:OPTION=ON ^
     -DGTSAM_BUILD_STATIC_LIBRARY=OFF ^
@@ -32,4 +29,10 @@ cd python
 python -m pip install . -vv
 if errorlevel 1 exit 1
 cd ..
+
+copy python\gtsam\gtsam.*.pyd "%SP_DIR%\gtsam\"
+if errorlevel 1 exit 1
+copy python\gtsam_unstable\gtsam_unstable.*.pyd "%SP_DIR%\gtsam_unstable\"
+if errorlevel 1 exit 1
+
 @rem ninja check
