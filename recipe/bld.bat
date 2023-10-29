@@ -26,7 +26,7 @@ ninja install -j1
 if errorlevel 1 exit 1
 
 cd python
-python -m pip install .
+python -m pip install . -vv
 if errorlevel 1 exit 1
 cd ..
 @rem ninja check
