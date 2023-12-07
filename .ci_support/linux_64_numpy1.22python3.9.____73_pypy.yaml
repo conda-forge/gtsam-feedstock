@@ -17,7 +17,7 @@ docker_image:
 libboost_devel:
 - '1.82'
 metis:
-- '5.1'
+- 5.1.1
 numpy:
 - '1.22'
 pin_run_as_build:
