@@ -19,6 +19,8 @@ source:
     - include_bitset.patch
     - fix-gtsam-export-4.2.0.patch
     - fix-gtsam-unstable-export-4.2.0.patch
+    - fix-missing-includes.patch
+
 build:
   number: 4
   run_exports:
