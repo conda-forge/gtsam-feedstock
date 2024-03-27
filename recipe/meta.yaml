@@ -20,13 +20,14 @@ source:
     - fix-gtsam-export-4.2.0.patch
     - fix-gtsam-unstable-export-4.2.0.patch
 build:
-  number: 3
+  number: 4
   run_exports:
     - '{{ pin_subpackage(name, max_pin="x.x") }}'
 
 requirements:
   build:
     - '{{ compiler("c") }}'
+    - {{ stdlib("c") }}
     - '{{ compiler("cxx") }}'
     - ninja
     - cmake
