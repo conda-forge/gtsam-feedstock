@@ -7,6 +7,10 @@ else
   skiprpath=""
 fi
 
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]] && [[ "$(uname)" != "Darwin" ]]; then
+  skiprpath="-DPYTHON_MODULE_EXTENSION=cpython-39-aarch64-linux-gnu.so"
+fi
+
 cmake .. ${CMAKE_ARGS} \
         ${skiprpath} \
         -GNinja \
