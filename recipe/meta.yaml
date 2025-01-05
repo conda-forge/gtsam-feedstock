@@ -23,7 +23,7 @@ source:
     - windows_python_fix_part_of_pr1685.patch
 
 build:
-  number: 10
+  number: 11
   run_exports:
     - '{{ pin_subpackage(name, max_pin="x.x") }}'
 

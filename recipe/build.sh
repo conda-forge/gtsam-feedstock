@@ -7,8 +7,16 @@ else
   skiprpath=""
 fi
 
+if [[ $target_platform == "linux-aarch64" ]]; then
+  PYTHON_MAJOR=`echo $PY_VER|cut -f1 -d.`
+  PYTHON_MINOR=`echo $PY_VER|cut -f2 -d.`
+  MODULE_EXT="-DPYTHON_MODULE_EXTENSION=.cpython-${PYTHON_MAJOR}${PYTHON_MINOR}-aarch64-linux-gnu.so"
+  echo "Use MODULE_EXT=$MODULE_EXT"
+fi
+
 cmake .. ${CMAKE_ARGS} \
         ${skiprpath} \
+        ${MODULE_EXT} \
         -GNinja \
         -DCMAKE_MACOSX_RPATH=1 \
         -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF \
