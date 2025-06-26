@@ -25,13 +25,13 @@ macos_machine:
 metis:
 - 5.1.0
 numpy:
-- '2.0'
+- '2'
 pin_run_as_build:
   python:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.9.* *_cpython
+- 3.10.* *_cpython
 suitesparse:
 - '7'
 target_platform:
@@ -43,5 +43,3 @@ tbb_devel:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - python
-  - numpy

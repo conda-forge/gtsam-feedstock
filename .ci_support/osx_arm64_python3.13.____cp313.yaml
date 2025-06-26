@@ -43,5 +43,3 @@ tbb_devel:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - python
-  - numpy

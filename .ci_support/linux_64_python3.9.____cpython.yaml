@@ -23,17 +23,17 @@ libboost_devel:
 metis:
 - 5.1.0
 numpy:
-- '2.0'
+- '2'
 pin_run_as_build:
   python:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.10.* *_cpython
+- 3.9.* *_cpython
 suitesparse:
 - '7'
 target_platform:
-- linux-aarch64
+- linux-64
 tbb:
 - '2021'
 tbb_devel:
@@ -41,5 +41,3 @@ tbb_devel:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - python
-  - numpy
