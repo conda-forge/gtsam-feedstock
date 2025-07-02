@@ -1,0 +1,13 @@
+diff --git a/gtsam/geometry/triangulation.cpp b/gtsam/geometry/triangulation.cpp
+index acb0ddf0e4..f7530b5e11 100644
+--- a/gtsam/geometry/triangulation.cpp
++++ b/gtsam/geometry/triangulation.cpp
+@@ -169,7 +169,7 @@ Point3 optimize(const NonlinearFactorGraph& graph, const Values& values,
+   LevenbergMarquardtOptimizer optimizer(graph, values, params);
+   Values result = optimizer.optimize();
+ 
+-  return result.at<Point3>(landmarkKey);
++  return boost::any_cast<Point3>(result.at(landmarkKey));
+ }
+ 
+ }  // namespace gtsam
