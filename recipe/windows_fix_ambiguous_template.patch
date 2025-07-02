@@ -7,7 +7,7 @@ index acb0ddf0e4..f7530b5e11 100644
    Values result = optimizer.optimize();
  
 -  return result.at<Point3>(landmarkKey);
-+  return boost::any_cast<Point3>(result.at(landmarkKey));
++  return result.at(landmarkKey).cast<Point3>();
  }
  
  }  // namespace gtsam
