@@ -28,6 +28,3 @@ tbb:
 - '2021'
 tbb_devel:
 - '2021'
-zip_keys:
-- - python
-  - numpy

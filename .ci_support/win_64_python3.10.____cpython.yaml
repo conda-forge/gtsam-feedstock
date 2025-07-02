@@ -13,7 +13,7 @@ libboost_devel:
 metis:
 - 5.1.0
 numpy:
-- '2.0'
+- '2'
 pin_run_as_build:
   python:
     min_pin: x.x
@@ -28,6 +28,3 @@ tbb:
 - '2021'
 tbb_devel:
 - '2021'
-zip_keys:
-- - python
-  - numpy
