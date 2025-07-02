@@ -21,6 +21,7 @@ source:
     - fix-gtsam-unstable-export-4.2.0.patch
     - fix-missing-includes.patch
     - windows_python_fix_part_of_pr1685.patch
+    - windows_fix_ambiguous_template.patch
 
 build:
   number: 12
