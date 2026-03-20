@@ -14,9 +14,10 @@ source:
     - fix-boost.patch  # [win]
     - fix-missing-includes.patch
     - fix-maybe-uninitialized.patch
+    - fix-basis-evaluation-gcc14.patch
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - '{{ pin_subpackage(name, max_pin="x.x") }}'
 

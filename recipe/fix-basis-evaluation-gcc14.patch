@@ -1,0 +1,19 @@
+diff --git a/gtsam/basis/Basis.h b/gtsam/basis/Basis.h
+index 695477b55..128e88023 100644
+--- a/gtsam/basis/Basis.h
++++ b/gtsam/basis/Basis.h
+@@ -144,7 +144,13 @@
+     double apply(const typename DERIVED::Parameters& p,
+                  OptionalJacobian<-1, -1> H = {}) const {
+       if (H) *H = weights_;
+-      return (weights_ * p)(0);
++      // GCC 14 can misdiagnose Eigen's vectorized row-vector times column-vector
++      // path here as maybe-uninitialized when these tests instantiate small
++      // dynamic vectors under -Werror.
++      double value = 0.0;
++      for (Eigen::Index j = 0; j < p.size(); ++j)
++        value += weights_(j) * p(j);
++      return value;
+     }
+ 
+     /// c++ sugar
