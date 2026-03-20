@@ -10,20 +10,12 @@ source:
   sha256: 8b44d6b98a3b608664d1c9a7c1383a406550499d894533bb0183e6cf487e6457
   patches:
     - nobuild-examples-timing.patch
-    - unvendor-findtbb.patch
-    - unvendor-pybind11.patch
     - fix-python-build-win.patch  # [win]
     - fix-boost.patch  # [win]
-    - fix-osx-rpath.patch  # [osx]
-    - 1553_1584.patch
-    - include_bitset.patch
-    - fix-gtsam-export-4.2.0.patch
-    - fix-gtsam-unstable-export-4.2.0.patch
     - fix-missing-includes.patch
-    - windows_python_fix_part_of_pr1685.patch
 
 build:
-  number: 14
+  number: 0
   run_exports:
     - '{{ pin_subpackage(name, max_pin="x.x") }}'
 
