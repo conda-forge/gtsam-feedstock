@@ -73,6 +73,7 @@ about:
   license_file:
     - LICENSE
     - LICENSE.BSD
+    - gtsam/3rdparty/cephes/LICENSE.txt
 
 extra:
   recipe-maintainers:
