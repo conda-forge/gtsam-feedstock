@@ -1,5 +1,5 @@
 {% set name = "gtsam" %}
-{% set version = "4.2.0" %}
+{% set version = "4.3a1" %}
 
 package:
   name: gtsam
