@@ -11,3 +11,16 @@ index 93e74e242..3cf329a81 100644
      const T pred = traits<T>::Compose(hatT21, T12_, H1 ? &H_pred_hat : nullptr);
  
      // Move to constructor
+diff --git a/gtsam/slam/TriangulationFactor.h b/gtsam/slam/TriangulationFactor.h
+index f36e9b385..c25afa8aa 100644
+--- a/gtsam/slam/TriangulationFactor.h
++++ b/gtsam/slam/TriangulationFactor.h
+@@ -64,7 +64,7 @@ public:
+ 
+   /// Default constructor
+   TriangulationFactor() :
+-      throwCheirality_(false), verboseCheirality_(false) {
++      throwCheirality_(false), verboseCheirality_(false), measured_() {
+   }
+ 
+   /**
