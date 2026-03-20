@@ -14,7 +14,7 @@ source:
     - fix-boost.patch  # [win]
     - fix-missing-includes.patch
     - fix-maybe-uninitialized.patch
-    - fix-basis-evaluation-gcc14.patch
+    - disable-werror.patch
 
 build:
   number: 1

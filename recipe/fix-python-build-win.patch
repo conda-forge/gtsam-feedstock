@@ -1,5 +1,5 @@
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
-index 857062f88..e6a674a2a 100644
+index 857062f88..a1fc58fcd 100644
 --- a/python/CMakeLists.txt
 +++ b/python/CMakeLists.txt
 @@ -23,6 +23,7 @@ macro(SET_PYTHON_TARGET_PROPERTIES PYTHON_TARGET OUTPUT_NAME OUTPUT_DIRECTORY)
@@ -10,6 +10,15 @@ index 857062f88..e6a674a2a 100644
          LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_DIRECTORY}"
          DEBUG_POSTFIX "" # Otherwise you will have a wrong name
          RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
+@@ -144,7 +145,7 @@ if(WIN32)
+     )
+     ADD_CUSTOM_COMMAND(TARGET ${GTSAM_PYTHON_TARGET} POST_BUILD
+         COMMAND ${CMAKE_COMMAND} -E copy_if_different
+-        "$<TARGET_FILE:gtsam>;$<TARGET_RUNTIME_DLLS:gtsam>"
++        "$<TARGET_FILE:gtsam>;$<TARGET_FILE:cephes-gtsam>"
+         "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam/"
+         COMMAND_EXPAND_LISTS
+         VERBATIM
 @@ -159,6 +160,7 @@ copy_directory("${CMAKE_CURRENT_SOURCE_DIR}/gtsam"
          "${GTSAM_MODULE_PATH}")
  
@@ -26,3 +35,12 @@ index 857062f88..e6a674a2a 100644
  
  # Common directory for data/datasets stored with the package.
  # This will store the data in the Python site package directly.
+@@ -258,7 +261,7 @@ if(GTSAM_UNSTABLE_BUILD_PYTHON)
+         )
+         ADD_CUSTOM_COMMAND(TARGET ${GTSAM_PYTHON_UNSTABLE_TARGET} POST_BUILD
+             COMMAND ${CMAKE_COMMAND} -E copy_if_different
+-            "$<TARGET_FILE:gtsam_unstable>;$<TARGET_RUNTIME_DLLS:gtsam_unstable>"
++            "$<TARGET_FILE:gtsam_unstable>;$<TARGET_FILE:gtsam>;$<TARGET_FILE:cephes-gtsam>"
+             "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam_unstable/"
+             COMMAND_EXPAND_LISTS
+             VERBATIM
