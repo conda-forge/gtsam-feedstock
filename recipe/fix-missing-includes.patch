@@ -24,3 +24,16 @@ index 58af66a09..9115e5afe 100644
  #include <CppUnitLite/TestHarness.h>
  #include <gtsam/base/TestableAssertions.h>
  #include <gtsam/linear/HessianFactor.h>
+diff --git a/gtsam/geometry/SL4.cpp b/gtsam/geometry/SL4.cpp
+index 3f1509f6e..2356317eb 100644
+--- a/gtsam/geometry/SL4.cpp
++++ b/gtsam/geometry/SL4.cpp
+@@ -4,6 +4,8 @@
+  * @author: Hyungtae Lim
+  */
+ 
++#include <cassert>
++
+ #include <gtsam/geometry/SL4.h>
+ 
+ // To use exp(), log()
