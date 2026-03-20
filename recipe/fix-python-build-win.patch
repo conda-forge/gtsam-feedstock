@@ -1,24 +1,24 @@
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
-index 79a27f17f..3c228fd47 100644
+index 857062f88..e6a674a2a 100644
 --- a/python/CMakeLists.txt
 +++ b/python/CMakeLists.txt
-@@ -93,6 +93,7 @@ set_target_properties(${GTSAM_PYTHON_TARGET} PROPERTIES
-     INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
-     INSTALL_RPATH_USE_LINK_PATH TRUE
-     OUTPUT_NAME "gtsam"
-+    ARCHIVE_OUTPUT_NAME "python_gtsam"
-     LIBRARY_OUTPUT_DIRECTORY "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam"
-     DEBUG_POSTFIX "" # Otherwise you will have a wrong name
-     RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
-@@ -105,6 +106,7 @@ set(GTSAM_MODULE_PATH ${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam)
- copy_directory("${CMAKE_CURRENT_SOURCE_DIR}/gtsam"
+@@ -23,6 +23,7 @@ macro(SET_PYTHON_TARGET_PROPERTIES PYTHON_TARGET OUTPUT_NAME OUTPUT_DIRECTORY)
+         INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
+         INSTALL_RPATH_USE_LINK_PATH TRUE
+         OUTPUT_NAME "${OUTPUT_NAME}"
++        ARCHIVE_OUTPUT_NAME "python_${OUTPUT_NAME}"
+         LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_DIRECTORY}"
+         DEBUG_POSTFIX "" # Otherwise you will have a wrong name
+         RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
+@@ -159,6 +160,7 @@ copy_directory("${CMAKE_CURRENT_SOURCE_DIR}/gtsam"
          "${GTSAM_MODULE_PATH}")
  
-+if(NOT WIN32)
  # Hack to get python test and util files copied every time they are modified
++if(NOT WIN32)
  file(GLOB GTSAM_PYTHON_TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gtsam/tests/*.py")
  foreach(test_file ${GTSAM_PYTHON_TEST_FILES})
-@@ -123,6 +125,7 @@ file(GLOB GTSAM_PYTHON_SPECIALIZATION_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gtsam/s
+         get_filename_component(test_file_name ${test_file} NAME)
+@@ -181,6 +183,7 @@ file(GLOB GTSAM_PYTHON_SPECIALIZATION_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gtsam/s
  foreach(util_file ${GTSAM_PYTHON_SPECIALIZATION_FILES})
          configure_file(${util_file} "${GTSAM_MODULE_PATH}/specializations/${test_file}" COPYONLY)
  endforeach()
@@ -26,25 +26,3 @@ index 79a27f17f..3c228fd47 100644
  
  # Common directory for data/datasets stored with the package.
  # This will store the data in the Python site package directly.
-@@ -173,6 +176,7 @@ if(GTSAM_UNSTABLE_BUILD_PYTHON)
-             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
-             INSTALL_RPATH_USE_LINK_PATH TRUE
-             OUTPUT_NAME "gtsam_unstable"
-+            ARCHIVE_OUTPUT_NAME "python_gtsam_unstable"
-             LIBRARY_OUTPUT_DIRECTORY "${GTSAM_PYTHON_BUILD_DIRECTORY}/gtsam_unstable"
-             DEBUG_POSTFIX "" # Otherwise you will have a wrong name
-             RELWITHDEBINFO_POSTFIX "" # Otherwise you will have a wrong name
-@@ -184,11 +188,13 @@ if(GTSAM_UNSTABLE_BUILD_PYTHON)
-     copy_directory("${CMAKE_CURRENT_SOURCE_DIR}/gtsam_unstable"
-             "${GTSAM_UNSTABLE_MODULE_PATH}")
- 
-+    if(NOT WIN32)
-     # Hack to get python test files copied every time they are modified
-     file(GLOB GTSAM_UNSTABLE_PYTHON_TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gtsam_unstable/tests/*.py")
-     foreach(test_file ${GTSAM_UNSTABLE_PYTHON_TEST_FILES})
-         configure_file(${test_file} "${GTSAM_UNSTABLE_MODULE_PATH}/tests/${test_file}" COPYONLY)
-     endforeach()
-+    endif()
- 
-     # Add gtsam_unstable to the install target
-     list(APPEND GTSAM_PYTHON_DEPENDENCIES ${GTSAM_PYTHON_UNSTABLE_TARGET})
