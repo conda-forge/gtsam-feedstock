@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/borglab/gtsam/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 8b44d6b98a3b608664d1c9a7c1383a406550499d894533bb0183e6cf487e6457
+  sha256: 4233192fd9154aa2c0ccd05aebd833d8bf67307888774895e7b3b3d98b31607a
   patches:
     - nobuild-examples-timing.patch
     - fix-python-build-win.patch  # [win]
