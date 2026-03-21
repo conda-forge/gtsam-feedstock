@@ -19,7 +19,7 @@ source:
     - disable-werror.patch
 
 build:
-  number: 2
+  number: 0
   run_exports:
     - '{{ pin_subpackage(name, max_pin="x.x") }}'
 
@@ -38,6 +38,7 @@ requirements:
     - python
     - libboost-devel
     - eigen
+    - eigen-abi-devel
     - geographiclib-cpp
     - metis
     - suitesparse
