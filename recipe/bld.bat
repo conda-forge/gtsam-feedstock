@@ -31,9 +31,9 @@ python -m pip install . -vv
 if errorlevel 1 exit 1
 cd ..
 
-copy python\gtsam\gtsam.*.pyd "%SP_DIR%\gtsam\"
+copy python\gtsam\gtsam*.pyd "%SP_DIR%\gtsam\"
 if errorlevel 1 exit 1
-copy python\gtsam_unstable\gtsam_unstable.*.pyd "%SP_DIR%\gtsam_unstable\"
+copy python\gtsam_unstable\gtsam_unstable*.pyd "%SP_DIR%\gtsam_unstable\"
 if errorlevel 1 exit 1
 
 @rem ninja check
