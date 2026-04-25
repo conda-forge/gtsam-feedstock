@@ -9,7 +9,7 @@ channel_targets:
 cxx_compiler:
 - vs2019
 libboost_devel:
-- '1.88'
+- '1.90'
 metis:
 - 5.1.0
 numpy:
@@ -25,9 +25,6 @@ suitesparse:
 target_platform:
 - win-64
 tbb:
-- '2021'
+- '2022'
 tbb_devel:
-- '2021'
-zip_keys:
-- - python
-  - channel_sources
+- '2022'
