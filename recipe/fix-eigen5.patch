@@ -56,3 +56,16 @@ index a7b0b2435..07404c010 100644
      }
  
      /** Apply operator A */
+diff --git a/gtsam/navigation/tests/testCombinedImuFactor.cpp b/gtsam/navigation/tests/testCombinedImuFactor.cpp
+index 913f32b84..6a13e771e 100644
+--- a/gtsam/navigation/tests/testCombinedImuFactor.cpp
++++ b/gtsam/navigation/tests/testCombinedImuFactor.cpp
+@@ -202,7 +202,7 @@ TEST(CombinedImuFactor, PredictRotation) {
+ 
+   // Predict
+   const Pose3 x(Rot3::Ypr(0, 0, 0), Point3(0, 0, 0)), x2;
+-  const Vector3 v(0, 0, 0), v2;
++  const Vector3 v(0, 0, 0);
+   const NavState actual = pim.predict(NavState(x, v), bias);
+   const Pose3 expectedPose(Rot3::Ypr(M_PI / 10, 0, 0), Point3(0, 0, 0));
+   EXPECT(assert_equal(expectedPose, actual.pose(), tol));
