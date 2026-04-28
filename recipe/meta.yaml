@@ -43,6 +43,7 @@ requirements:
     - python
     - libboost-devel
     - eigen
+    - eigen-abi-devel
     - geographiclib-cpp
     - metis
     - suitesparse
