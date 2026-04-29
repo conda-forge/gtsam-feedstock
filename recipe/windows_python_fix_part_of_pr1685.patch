@@ -1,12 +1,22 @@
 diff --git a/gtsam/nonlinear/Values-inl.h b/gtsam/nonlinear/Values-inl.h
-index a93f9570e6..6da87d71c2 100644
+index a93f9570e6..442343c42 100644
 --- a/gtsam/nonlinear/Values-inl.h
 +++ b/gtsam/nonlinear/Values-inl.h
-@@ -197,6 +197,59 @@ namespace gtsam {
-      }
-    };
+@@ -303,6 +303,7 @@ namespace gtsam {
+    template <typename MatrixType, bool isDynamic>
+    struct handle_matrix;
  
-+#ifdef _WIN32
++#ifndef _WIN32
+    // Handle dynamic matrices
+    template <int M, int N>
+    struct handle_matrix<Eigen::Matrix<double, M, N>, true> {
+@@ -351,9 +352,61 @@ namespace gtsam {
+      Eigen::Matrix<double, M, N> operator()(Key j, const Value* const pointer) {
+        return handle_matrix<Eigen::Matrix<double, M, N>,
+                             (M == Eigen::Dynamic || N == Eigen::Dynamic)>()(j, pointer);
++     }
++   };
++#else
 +   // Handle dynamic matrices
 +   template <int M, int N>
 +   struct handle_matrix<Eigen::Matrix<double, M, N, 0, M, N>, true> {
@@ -19,9 +29,9 @@ index a93f9570e6..6da87d71c2 100644
 +         // If a fixed matrix was stored, we end up here as well.
 +         throw ValuesIncorrectType(j, typeid(*pointer), typeid(Eigen::Matrix<double, M, N>));
 +       }
-+     }
-+   };
-+
+      }
+    };
+ 
 +   // Handle fixed matrices
 +   template <int M, int N>
 +   struct handle_matrix<Eigen::Matrix<double, M, N, 0, M, N>, false> {
@@ -57,9 +67,8 @@ index a93f9570e6..6da87d71c2 100644
 +                            (M == Eigen::Dynamic || N == Eigen::Dynamic)>()(j, pointer);
 +     }
 +   };
-+#endif // #ifdef _WIN32
++#endif // #ifndef _WIN32
 +
     }  // internal
  
     /* ************************************************************************* */
-
