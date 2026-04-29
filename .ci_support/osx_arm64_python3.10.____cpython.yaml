@@ -18,8 +18,10 @@ cxx_compiler:
 - clangxx
 cxx_compiler_version:
 - '19'
+eigen_abi_devel:
+- 5.0.1
 libboost_devel:
-- '1.88'
+- '1.90'
 macos_machine:
 - arm64-apple-darwin20.0.0
 metis:
@@ -37,11 +39,9 @@ suitesparse:
 target_platform:
 - osx-arm64
 tbb:
-- '2021'
+- '2022'
 tbb_devel:
-- '2021'
+- '2022'
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - python
-  - channel_sources
