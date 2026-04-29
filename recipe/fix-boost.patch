@@ -11,26 +11,3 @@ index 6c742cfe5..c6d78aff7 100644
      # If we ever reset above on windows and, ...
      # If we use Boost shared libs, disable auto linking.
      # Some libraries, at least Boost Program Options, rely on this to export DLL symbols.
-@@ -23,12 +23,12 @@
- 
- # Store these in variables so they are automatically replicated in GTSAMConfig.cmake and such.
- set(BOOST_FIND_MINIMUM_VERSION 1.65)
--set(BOOST_FIND_MINIMUM_COMPONENTS serialization system filesystem thread program_options date_time timer chrono regex)
-+set(BOOST_FIND_MINIMUM_COMPONENTS serialization filesystem thread program_options date_time timer chrono regex)
- 
- find_package(Boost ${BOOST_FIND_MINIMUM_VERSION} COMPONENTS ${BOOST_FIND_MINIMUM_COMPONENTS})
- 
- # Required components
--if(NOT Boost_SERIALIZATION_LIBRARY OR NOT Boost_SYSTEM_LIBRARY OR NOT Boost_FILESYSTEM_LIBRARY OR
-+if(NOT Boost_SERIALIZATION_LIBRARY OR NOT Boost_FILESYSTEM_LIBRARY OR
-     NOT Boost_THREAD_LIBRARY OR NOT Boost_DATE_TIME_LIBRARY)
-   message(FATAL_ERROR "Missing required Boost components >= v1.65, please install/upgrade Boost or configure your search paths.")
- endif()
-@@ -37,7 +37,6 @@
- # Allow for not using the timer libraries on boost < 1.48 (GTSAM timing code falls back to old timer library)
- set(GTSAM_BOOST_LIBRARIES
-   Boost::serialization
--  Boost::system
-   Boost::filesystem
-   Boost::thread
-   Boost::date_time
