@@ -13,13 +13,14 @@ source:
     - unvendor-findtbb.patch
     - unvendor-pybind11.patch
     - fix-python-build-win.patch  # [win]
-    - fix-boost.patch  # [win]
+    - fix-boost.patch
     - fix-osx-rpath.patch  # [osx]
     - 1553_1584.patch
     - include_bitset.patch
     - fix-gtsam-export-4.2.0.patch
     - fix-gtsam-unstable-export-4.2.0.patch
     - fix-missing-includes.patch
+    - fix-eigen5.patch
     - windows_python_fix_part_of_pr1685.patch
 
 build:
@@ -42,6 +43,7 @@ requirements:
     - python
     - libboost-devel
     - eigen
+    - eigen-abi-devel
     - geographiclib-cpp
     - metis
     - suitesparse

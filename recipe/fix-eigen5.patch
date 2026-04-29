@@ -1,0 +1,71 @@
+diff --git a/gtsam/base/Matrix.h b/gtsam/base/Matrix.h
+index 00dfa3ae7..88689243b 100644
+--- a/gtsam/base/Matrix.h
++++ b/gtsam/base/Matrix.h
+@@ -53,8 +53,8 @@ using Matrix6##N = Eigen::Matrix<double, 6, N>;  \
+ using Matrix7##N = Eigen::Matrix<double, 7, N>;  \
+ using Matrix8##N = Eigen::Matrix<double, 8, N>;  \
+ using Matrix9##N = Eigen::Matrix<double, 9, N>;  \
+-static const Eigen::MatrixBase<Matrix##N>::IdentityReturnType I_##N##x##N = Matrix##N::Identity(); \
+-static const Eigen::MatrixBase<Matrix##N>::ConstantReturnType Z_##N##x##N = Matrix##N::Zero();
++static const Matrix##N I_##N##x##N = Matrix##N::Identity(); \
++static const Matrix##N Z_##N##x##N = Matrix##N::Zero();
+ 
+ GTSAM_MAKE_MATRIX_DEFS(1)
+ GTSAM_MAKE_MATRIX_DEFS(2)
+diff --git a/gtsam/base/Vector.h b/gtsam/base/Vector.h
+index 724de502d..d33797605 100644
+--- a/gtsam/base/Vector.h
++++ b/gtsam/base/Vector.h
+@@ -26,6 +26,7 @@
+ 
+ #include <gtsam/global_includes.h>
+ #include <Eigen/Core>
++#include <cassert>
+ #include <iosfwd>
+ #include <list>
+ 
+@@ -42,14 +42,14 @@ typedef Eigen::Matrix<double, 1, 1> Vector1;
+ typedef Eigen::Vector2d Vector2;
+ typedef Eigen::Vector3d Vector3;
+ 
+-static const Eigen::MatrixBase<Vector2>::ConstantReturnType Z_2x1 = Vector2::Zero();
+-static const Eigen::MatrixBase<Vector3>::ConstantReturnType Z_3x1 = Vector3::Zero();
++static const Vector2 Z_2x1 = Vector2::Zero();
++static const Vector3 Z_3x1 = Vector3::Zero();
+ 
+ // Create handy typedefs and constants for vectors with N>3
+ // VectorN and Z_Nx1, for N=1..9
+ #define GTSAM_MAKE_VECTOR_DEFS(N)                \
+   using Vector##N = Eigen::Matrix<double, N, 1>; \
+-  static const Eigen::MatrixBase<Vector##N>::ConstantReturnType Z_##N##x1 = Vector##N::Zero();
++  static const Vector##N Z_##N##x1 = Vector##N::Zero();
+ 
+ GTSAM_MAKE_VECTOR_DEFS(4)
+ GTSAM_MAKE_VECTOR_DEFS(5)
+diff --git a/gtsam/linear/iterative.h b/gtsam/linear/iterative.h
+index a7b0b2435..07404c010 100644
+--- a/gtsam/linear/iterative.h
++++ b/gtsam/linear/iterative.h
+@@ -71,7 +71,7 @@ namespace gtsam {
+ 
+     /** gradient of objective function 0.5*|Ax-b_|^2 at x = A_'*(Ax-b_) */
+     Vector gradient(const Vector& x) const {
+-      return A() ^ (A() * x - b());
++      return A() ^ Vector(A() * x - b());
+     }
+ 
+     /** Apply operator A */
+diff --git a/gtsam/navigation/tests/testCombinedImuFactor.cpp b/gtsam/navigation/tests/testCombinedImuFactor.cpp
+index 913f32b84..6a13e771e 100644
+--- a/gtsam/navigation/tests/testCombinedImuFactor.cpp
++++ b/gtsam/navigation/tests/testCombinedImuFactor.cpp
+@@ -202,7 +202,7 @@ TEST(CombinedImuFactor, PredictRotation) {
+ 
+   // Predict
+   const Pose3 x(Rot3::Ypr(0, 0, 0), Point3(0, 0, 0)), x2;
+-  const Vector3 v(0, 0, 0), v2;
++  const Vector3 v(0, 0, 0);
+   const NavState actual = pim.predict(NavState(x, v), bias);
+   const Pose3 expectedPose(Rot3::Ypr(M_PI / 10, 0, 0), Point3(0, 0, 0));
+   EXPECT(assert_equal(expectedPose, actual.pose(), tol));
