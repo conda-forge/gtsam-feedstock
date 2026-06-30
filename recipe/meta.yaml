@@ -1,5 +1,5 @@
 {% set name = "gtsam" %}
-{% set version = "4.2.1" %}
+{% set version = "4.2.2" %}
 
 package:
   name: gtsam
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/borglab/gtsam/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 96ea77d620fc8c2e9ed79af1b4abfdc3e73d96ee7a581a2bc326963c43dd92c2
+  sha256: d4420b7ee16fc51cd9afc1f5171d6a315383fc5b58a6375466e7585d90d36d80
   patches:
     - nobuild-examples-timing.patch
     - unvendor-findtbb.patch
@@ -24,7 +24,7 @@ source:
     - windows_python_fix_part_of_pr1685.patch
 
 build:
-  number: 1
+  number: 0
   run_exports:
     - {{ pin_subpackage(name, max_pin="x.x") }}
 
