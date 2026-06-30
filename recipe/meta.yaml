@@ -16,7 +16,6 @@ source:
     - fix-boost.patch
     - fix-osx-rpath.patch  # [osx]
     - 1553_1584.patch
-    - include_bitset.patch
     - fix-gtsam-export-4.2.0.patch
     - fix-gtsam-unstable-export-4.2.0.patch
     - fix-missing-includes.patch
