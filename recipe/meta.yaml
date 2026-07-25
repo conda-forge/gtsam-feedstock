@@ -1,5 +1,5 @@
 {% set name = "gtsam" %}
-{% set version = "4.2.2" %}
+{% set version = "4.3a1" %}
 
 package:
   name: gtsam
@@ -7,31 +7,27 @@ package:
 
 source:
   url: https://github.com/borglab/gtsam/archive/refs/tags/{{ version }}.tar.gz
-  sha256: d4420b7ee16fc51cd9afc1f5171d6a315383fc5b58a6375466e7585d90d36d80
+  sha256: 4233192fd9154aa2c0ccd05aebd833d8bf67307888774895e7b3b3d98b31607a
   patches:
     - nobuild-examples-timing.patch
-    - unvendor-findtbb.patch
-    - unvendor-pybind11.patch
     - fix-python-build-win.patch  # [win]
-    - fix-boost.patch
-    - fix-osx-rpath.patch  # [osx]
-    - 1553_1584.patch
-    - fix-gtsam-export-4.2.0.patch
-    - fix-gtsam-unstable-export-4.2.0.patch
+    - fix-boost.patch  # [win]
     - fix-missing-includes.patch
-    - fix-eigen5.patch
-    - windows_python_fix_part_of_pr1685.patch
+    - fix-maybe-uninitialized.patch
+    - fix-combined-imu-test-init.patch
+    - fix-cephes-libm-link.patch
+    - disable-werror.patch
 
 build:
   number: 0
   run_exports:
-    - {{ pin_subpackage(name, max_pin="x.x") }}
+    - '{{ pin_subpackage(name, max_pin="x.x") }}'
 
 requirements:
   build:
-    - {{ compiler("c") }}
+    - '{{ compiler("c") }}'
     - {{ stdlib("c") }}
-    - {{ compiler("cxx") }}
+    - '{{ compiler("cxx") }}'
     - ninja
     - cmake
     - pybind11                               # [build_platform != target_platform]
@@ -61,7 +57,7 @@ requirements:
 test:
   files:
     - regression_test_25.py
-  commands:
+  commands: 
     - python regression_test_25.py  # [build_platform == target_platform]
     - test -f ${PREFIX}/lib/libgtsam${SHLIB_EXT}  # [not win]
     - test -f ${PREFIX}/lib/cmake/gtwrap/gtwrapConfig.cmake  # [not win]
@@ -81,6 +77,7 @@ about:
   license_file:
     - LICENSE
     - LICENSE.BSD
+    - gtsam/3rdparty/cephes/LICENSE.txt
 
 extra:
   recipe-maintainers:

@@ -1,0 +1,26 @@
+diff --git a/gtsam/slam/FrobeniusFactor.h b/gtsam/slam/FrobeniusFactor.h
+index 93e74e242..3cf329a81 100644
+--- a/gtsam/slam/FrobeniusFactor.h
++++ b/gtsam/slam/FrobeniusFactor.h
+@@ -204,7 +204,7 @@ class FrobeniusBetweenFactorNL : public NoiseModelFactorN<T, T> {
+     const T hatT21 = traits<T>::Between(T2, T1, H1 ? &H_T21_T2 : nullptr);
+ 
+     // Calculate \hat T21 * T12_, which is predicted to be I_NxN
+-    typename T::Jacobian H_pred_hat;
++    typename T::Jacobian H_pred_hat = T::Jacobian::Zero();;
+     const T pred = traits<T>::Compose(hatT21, T12_, H1 ? &H_pred_hat : nullptr);
+ 
+     // Move to constructor
+diff --git a/gtsam/slam/TriangulationFactor.h b/gtsam/slam/TriangulationFactor.h
+index f36e9b385..c25afa8aa 100644
+--- a/gtsam/slam/TriangulationFactor.h
++++ b/gtsam/slam/TriangulationFactor.h
+@@ -64,7 +64,7 @@ public:
+ 
+   /// Default constructor
+   TriangulationFactor() :
+-      throwCheirality_(false), verboseCheirality_(false) {
++      throwCheirality_(false), verboseCheirality_(false), measured_() {
+   }
+ 
+   /**
