@@ -3,7 +3,7 @@
 
 package:
   name: gtsam
-  version: '{{ version }}'
+  version: 'dev{{ version }}'
 
 source:
   url: https://github.com/borglab/gtsam/archive/refs/tags/{{ version }}.tar.gz
@@ -25,8 +25,8 @@ build:
 
 requirements:
   build:
+    - '{{ stdlib("c") }}'
     - '{{ compiler("c") }}'
-    - {{ stdlib("c") }}
     - '{{ compiler("cxx") }}'
     - ninja
     - cmake
@@ -57,7 +57,7 @@ requirements:
 test:
   files:
     - regression_test_25.py
-  commands: 
+  commands:
     - python regression_test_25.py  # [build_platform == target_platform]
     - test -f ${PREFIX}/lib/libgtsam${SHLIB_EXT}  # [not win]
     - test -f ${PREFIX}/lib/cmake/gtwrap/gtwrapConfig.cmake  # [not win]
