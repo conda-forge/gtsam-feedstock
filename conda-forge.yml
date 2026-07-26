@@ -3,8 +3,11 @@ azure:
     variables:
       SET_PAGEFILE: 'True'
 build_platform:
-  linux_aarch64: linux_64
-  osx_arm64: osx_64
+  linux_aarch64: linux_aarch64
+  osx_arm64: osx_arm64
+provider:
+  linux_aarch64: default
+  osx_arm64: default
 conda_build:
   pkg_format: '2'
 conda_forge_output_validation: true
