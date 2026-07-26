@@ -3,7 +3,7 @@
 
 package:
   name: gtsam
-  version: 'dev{{ version }}'
+  version: '4.3dev-a1'
 
 source:
   url: https://github.com/borglab/gtsam/archive/refs/tags/{{ version }}.tar.gz
