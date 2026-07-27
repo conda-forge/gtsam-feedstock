@@ -32,11 +32,19 @@ pkgs_dirs:
 solver: libmamba
 
 CONDARC
-mv /opt/conda/conda-meta/history /opt/conda/conda-meta/history.$(date +%Y-%m-%d-%H-%M-%S)
-echo > /opt/conda/conda-meta/history
-micromamba install --root-prefix ~/.conda --prefix /opt/conda \
-    --yes --override-channels --channel conda-forge --strict-channel-priority \
-    pip  python=3.12 conda-build conda-forge-ci-setup=4 "conda-build>=26.3"
+pushd "${FEEDSTOCK_ROOT}"
+arch=$(uname -m)
+if [[ "$arch" == "x86_64" ]]; then
+  arch="64"
+fi
+sed -i.bak -e "s/platforms = .*/platforms = [\"linux-${arch}\"]/" -e "s/# __PLATFORM_SPECIFIC_ENV__ =/docker-build-linux-$arch =/" pixi.toml
+echo "Creating environment"
+PIXI_CACHE_DIR=/opt/conda pixi install --environment docker-build-linux-$arch
+pixi list
+echo "Activating environment"
+eval "$(pixi shell-hook --environment docker-build-linux-$arch)"
+mv pixi.toml.bak pixi.toml
+popd
 export CONDA_LIBMAMBA_SOLVER_NO_CHANNELS_FROM_INSTALLED=1
 
 # set up the condarc
@@ -61,18 +69,33 @@ if [[ -f "${FEEDSTOCK_ROOT}/LICENSE.txt" ]]; then
 fi
 
 if [[ "${BUILD_WITH_CONDA_DEBUG:-0}" == 1 ]]; then
-    if [[ "x${BUILD_OUTPUT_ID:-}" != "x" ]]; then
-        EXTRA_CB_OPTIONS="${EXTRA_CB_OPTIONS:-} --output-id ${BUILD_OUTPUT_ID}"
-    fi
-    conda debug "${RECIPE_ROOT}" -m "${CI_SUPPORT}/${CONFIG}.yaml" \
+    # differences between conda-build vs. rattler-build
+    #   - 1 step (conda debug + manually open shell) vs. 2 step (rb debug {setup, shell})
+    #   - recipe is positional vs. --recipe "${RECIPE_ROOT}"
+    #   - --output-id vs. --output-name
+    #   - --clobber-file vs. none
+    #   - none vs. --target-platform
+    conda debug \
+        "${RECIPE_ROOT}" \
+        -m "${CI_SUPPORT}/${CONFIG}.yaml" \
         ${EXTRA_CB_OPTIONS:-} \
+        ${BUILD_OUTPUT_ID:+--output-id "${BUILD_OUTPUT_ID}"} \
         --clobber-file "${CI_SUPPORT}/clobber_${CONFIG}.yaml"
 
     # Drop into an interactive shell
     /bin/bash
 else
-    conda-build "${RECIPE_ROOT}" -m "${CI_SUPPORT}/${CONFIG}.yaml" \
-        --suppress-variables ${EXTRA_CB_OPTIONS:-} \
+    # differences between conda-build vs. rattler-build
+    #   - recipe is positional vs. --recipe "${RECIPE_ROOT}"
+    #   - --suppress-variables vs. none
+    #   - --clobber-file vs. none
+    #   - none vs. --target-platform
+    #   - --extra-meta a=b c=d vs. --extra-meta a=b --extra-meta c=d
+    conda-build \
+        "${RECIPE_ROOT}" \
+        -m "${CI_SUPPORT}/${CONFIG}.yaml" \
+        ${EXTRA_CB_OPTIONS:-} \
+        --suppress-variables \
         --clobber-file "${CI_SUPPORT}/clobber_${CONFIG}.yaml" \
         --extra-meta flow_run_id="${flow_run_id:-}" remote_url="${remote_url:-}" sha="${sha:-}"
     ( startgroup "Inspecting artifacts" ) 2> /dev/null

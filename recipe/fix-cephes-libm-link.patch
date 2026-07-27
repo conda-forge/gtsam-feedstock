@@ -1,0 +1,15 @@
+diff --git a/gtsam/3rdparty/cephes/CMakeLists.txt b/gtsam/3rdparty/cephes/CMakeLists.txt
+index e33c8c902..caf992924 100644
+--- a/gtsam/3rdparty/cephes/CMakeLists.txt
++++ b/gtsam/3rdparty/cephes/CMakeLists.txt
+@@ -96,6 +96,10 @@ target_include_directories(
+   cephes-gtsam BEFORE PUBLIC $<INSTALL_INTERFACE:include/gtsam/3rdparty/cephes/>
+                              $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+ 
++if(UNIX AND NOT APPLE)
++  target_link_libraries(cephes-gtsam PRIVATE m)
++endif()
++
+ set_target_properties(
+   cephes-gtsam
+   PROPERTIES VERSION ${PROJECT_VERSION}

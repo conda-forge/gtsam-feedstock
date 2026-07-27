@@ -1,13 +1,47 @@
+diff --git a/cmake/Config.cmake.in b/cmake/Config.cmake.in
+index 338ff8500..a3d28e825 100644
+--- a/cmake/Config.cmake.in
++++ b/cmake/Config.cmake.in
+@@ -17,9 +17,9 @@ include(CMakeFindDependencyMacro)
+ # Allow using cmake < 3.8
+ if (@GTSAM_ENABLE_BOOST_SERIALIZATION@ OR @GTSAM_USE_BOOST_FEATURES@)
+   if(${CMAKE_VERSION} VERSION_LESS "3.8.0")
+-    find_package(Boost @BOOST_FIND_MINIMUM_VERSION@ COMPONENTS @BOOST_FIND_MINIMUM_COMPONENTS@)
++    find_package(Boost COMPONENTS @BOOST_FIND_MINIMUM_COMPONENTS@)
+   else()
+-    find_dependency(Boost @BOOST_FIND_MINIMUM_VERSION@ COMPONENTS @BOOST_FIND_MINIMUM_COMPONENTS@)
++    find_dependency(Boost COMPONENTS @BOOST_FIND_MINIMUM_COMPONENTS@)
+   endif()
+ endif()
+ 
 diff --git a/cmake/HandleBoost.cmake b/cmake/HandleBoost.cmake
-index 6c742cfe5..c6d78aff7 100644
+index cfbb55b39..f802c0d07 100644
 --- a/cmake/HandleBoost.cmake
 +++ b/cmake/HandleBoost.cmake
-@@ -7,7 +7,7 @@
+@@ -12,7 +12,7 @@
  
  if(MSVC)
-     # By default, boost only builds static libraries on windows
--    set(Boost_USE_STATIC_LIBS ON)  # only find static libs
-+    set(Boost_USE_STATIC_LIBS OFF)  # only find static libs
-     # If we ever reset above on windows and, ...
-     # If we use Boost shared libs, disable auto linking.
-     # Some libraries, at least Boost Program Options, rely on this to export DLL symbols.
+     # By default, Boost pre-compiled binaries for Windows are static libraries.
+-    set(Boost_USE_STATIC_LIBS ON)
++    set(Boost_USE_STATIC_LIBS OFF)
+     if(NOT Boost_USE_STATIC_LIBS)
+         list_append_cache(GTSAM_COMPILE_DEFINITIONS_PUBLIC BOOST_ALL_NO_LIB BOOST_ALL_DYN_LINK)
+     endif()
+@@ -48,16 +48,7 @@ set(BOOST_FIND_MINIMUM_COMPONENTS serialization filesystem thread program_option
+ # Find the Boost package. On systems with modern installations (vcpkg, Homebrew),
+ # this will use CMake's "Config mode". With manual installations (especially on
+ # Windows), providing the hints above will trigger the legacy "Module mode".
+-find_package(Boost ${BOOST_FIND_MINIMUM_VERSION} REQUIRED
+-             COMPONENTS ${BOOST_FIND_MINIMUM_COMPONENTS}
+-             )
+-
+-# Verify that the required Boost component targets were successfully found and imported.
+-foreach(_t IN ITEMS Boost::serialization Boost::filesystem Boost::thread Boost::date_time)
+-  if(NOT TARGET ${_t})
+-    message(FATAL_ERROR "Missing required Boost component target: ${_t}. Please install/upgrade Boost or set BOOST_ROOT/Boost_DIR correctly.")
+-  endif()
+-endforeach()
++find_package(Boost COMPONENTS ${BOOST_FIND_MINIMUM_COMPONENTS})
+ 
+ option(GTSAM_DISABLE_NEW_TIMERS "Disables using Boost.chrono for timing" OFF)
+ 

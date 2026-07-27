@@ -69,6 +69,41 @@ Current build status
                 </a>
               </td>
             </tr><tr>
+              <td>osx_arm64_python3.10.____cpython</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=15368&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/gtsam-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_python3.10.____cpython" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_python3.11.____cpython</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=15368&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/gtsam-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_python3.11.____cpython" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_python3.12.____cpython</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=15368&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/gtsam-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_python3.12.____cpython" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_python3.13.____cp313</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=15368&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/gtsam-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_python3.13.____cp313" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_python3.14.____cp314</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=15368&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/gtsam-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_python3.14.____cp314" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
               <td>win_64_python3.10.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=15368&branchName=main">
@@ -121,14 +156,14 @@ Current release info
 Installing gtsam
 ================
 
-Installing `gtsam` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
+Installing `gtsam` from the `conda-forge/label/gtsam_dev` channel can be achieved by adding `conda-forge/label/gtsam_dev` to your channels with:
 
 ```
-conda config --add channels conda-forge
+conda config --add channels conda-forge/label/gtsam_dev
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `gtsam` can be installed with `conda`:
+Once the `conda-forge/label/gtsam_dev` channel has been enabled, `gtsam` can be installed with `conda`:
 
 ```
 conda install gtsam
@@ -143,26 +178,26 @@ mamba install gtsam
 It is possible to list all of the versions of `gtsam` available on your platform with `conda`:
 
 ```
-conda search gtsam --channel conda-forge
+conda search gtsam --channel conda-forge/label/gtsam_dev
 ```
 
 or with `mamba`:
 
 ```
-mamba search gtsam --channel conda-forge
+mamba search gtsam --channel conda-forge/label/gtsam_dev
 ```
 
 Alternatively, `mamba repoquery` may provide more information:
 
 ```
 # Search all versions available on your platform:
-mamba repoquery search gtsam --channel conda-forge
+mamba repoquery search gtsam --channel conda-forge/label/gtsam_dev
 
 # List packages depending on `gtsam`:
-mamba repoquery whoneeds gtsam --channel conda-forge
+mamba repoquery whoneeds gtsam --channel conda-forge/label/gtsam_dev
 
 # List dependencies of `gtsam`:
-mamba repoquery depends gtsam --channel conda-forge
+mamba repoquery depends gtsam --channel conda-forge/label/gtsam_dev
 ```
 
 
