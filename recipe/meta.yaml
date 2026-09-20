@@ -1,5 +1,5 @@
 {% set name = "gtsam" %}
-{% set version = "4.2.2" %}
+{% set version = "4.3.0" %}
 
 package:
   name: gtsam
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/borglab/gtsam/archive/refs/tags/{{ version }}.tar.gz
-  sha256: d4420b7ee16fc51cd9afc1f5171d6a315383fc5b58a6375466e7585d90d36d80
+  sha256: 4539afcd47d336864deb8399e0a9a5c283a638f605892c942ec46f3541fd4fb0
   patches:
     - nobuild-examples-timing.patch
     - unvendor-findtbb.patch
