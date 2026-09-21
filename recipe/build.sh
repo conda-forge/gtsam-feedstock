@@ -1,14 +1,7 @@
 mkdir build
 cd build
 
-if [ "$(uname)" == "Darwin" ]; then
-  skiprpath="-DCMAKE_SKIP_RPATH=TRUE"
-else
-  skiprpath=""
-fi
-
 cmake .. ${CMAKE_ARGS} \
-        ${skiprpath} \
         -GNinja \
         -DCMAKE_MACOSX_RPATH=1 \
         -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF \
@@ -25,7 +18,10 @@ cmake .. ${CMAKE_ARGS} \
         -DPython_EXECUTABLE=$PYTHON \
         -DPYTHON_EXECUTABLE=$PYTHON
 
-ninja install -j2
+# The pybind11 translation units (slam.cpp, navigation.cpp, ...) each need
+# several GB to compile; two at once OOMs the 16 GB CI runners. build.bat
+# already serializes for the same reason.
+ninja install -j1
 
 cd python
 $PYTHON -m pip install . --no-deps --no-build-isolation
