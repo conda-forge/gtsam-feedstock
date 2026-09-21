@@ -1,0 +1,102 @@
+schema_version: 1
+
+context:
+  version: "4.3.0"
+
+package:
+  name: gtsam
+  version: ${{ version }}
+
+source:
+  url: https://github.com/borglab/gtsam/archive/refs/tags/${{ version }}.tar.gz
+  sha256: 4539afcd47d336864deb8399e0a9a5c283a638f605892c942ec46f3541fd4fb0
+  patches:
+    - fix-metis-partition-label-order.patch
+    - if: win
+      then:
+        - fix-python-build-win.patch
+        - fix-boost.patch
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - ${{ stdlib("c") }}
+    - ${{ compiler("c") }}
+    - ${{ compiler("cxx") }}
+    - ninja
+    - cmake
+    - if: build_platform != target_platform
+      then:
+        - pybind11
+        - numpy
+        - python
+        - cross-python_${{ target_platform }}
+  host:
+    - python
+    - libboost-devel
+    - eigen
+    - eigen-abi-devel
+    - geographiclib-cpp
+    - metis
+    - suitesparse
+    - tbb
+    - tbb-devel
+    - pybind11
+    - pyparsing
+    - numpy
+    - setuptools
+    - pip
+  run:
+    - python
+    - pyparsing
+    - numpy
+  run_exports:
+    - ${{ pin_subpackage("gtsam", upper_bound="x.x") }}
+
+tests:
+  - python:
+      imports:
+        - gtsam
+      pip_check: false
+  - files:
+      recipe:
+        - regression_test_25.py
+    requirements:
+      run:
+        - if: build_platform == target_platform
+          then: python
+    script:
+      - if: build_platform == target_platform
+        then: python regression_test_25.py
+      - if: not win
+        then:
+          - test -f ${PREFIX}/lib/libgtsam${SHLIB_EXT}
+          - test -f ${PREFIX}/lib/cmake/gtwrap/gtwrapConfig.cmake
+          - test -f ${PREFIX}/lib/cmake/GTSAM/GTSAMConfig.cmake
+          - test -f ${PREFIX}/include/gtsam/base/types.h
+      - if: win
+        then:
+          - if not exist %LIBRARY_INC%\gtsam\base\types.h exit 1
+          - if not exist %LIBRARY_LIB%\cmake\GTSAM\GTSAMConfig.cmake exit 1
+          - if not exist %LIBRARY_LIB%\gtsam.lib exit 1
+          - if not exist %LIBRARY_BIN%\gtsam.dll exit 1
+
+about:
+  homepage: https://github.com/borglab/gtsam
+  summary: GTSAM is a library of C++ classes that implement smoothing and mapping (SAM) in robotics and vision
+  license: BSD-3-Clause
+  license_file:
+    - LICENSE
+    - LICENSE.BSD
+    - gtsam/3rdparty/cephes/LICENSE.txt
+  repository: https://github.com/borglab/gtsam
+  documentation: https://gtsam.org/
+
+extra:
+  recipe-maintainers:
+    - wolfv
+    - ameysutavani
+    - Tobias-Fischer
+    - traversaro

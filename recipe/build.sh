@@ -7,21 +7,18 @@ else
   skiprpath=""
 fi
 
-if [[ $target_platform == "linux-aarch64" ]]; then
-  PYTHON_MAJOR=`echo $PY_VER|cut -f1 -d.`
-  PYTHON_MINOR=`echo $PY_VER|cut -f2 -d.`
-  MODULE_EXT="-DPYTHON_MODULE_EXTENSION=.cpython-${PYTHON_MAJOR}${PYTHON_MINOR}-aarch64-linux-gnu.so"
-  echo "Use MODULE_EXT=$MODULE_EXT"
-fi
-
 cmake .. ${CMAKE_ARGS} \
         ${skiprpath} \
-        ${MODULE_EXT} \
         -GNinja \
         -DCMAKE_MACOSX_RPATH=1 \
         -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF \
+        -DGTSAM_BUILD_WITH_WERROR=OFF \
+        -DGTSAM_BUILD_WITH_CCACHE=OFF \
+        -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF \
+        -DGTSAM_BUILD_TIMING_ALWAYS=OFF \
         -DGTSAM_USE_SYSTEM_EIGEN=ON \
         -DGTSAM_USE_SYSTEM_METIS=ON \
+        -DGTSAM_USE_SYSTEM_PYBIND=ON \
         -DGTSAM_INSTALL_CPPUNITLITE=OFF \
         -DGTSAM_BUILD_PYTHON=ON \
         -DPython3_EXECUTABLE=$PYTHON \
@@ -31,9 +28,8 @@ cmake .. ${CMAKE_ARGS} \
 ninja install -j2
 
 cd python
-$PYTHON -m pip install .
+$PYTHON -m pip install . --no-deps --no-build-isolation
 cd ..
 
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]] && [[ "$(uname)" != "Darwin" ]]; then
-  ninja check
-fi
+ninja all.tests
+ctest --output-on-failure

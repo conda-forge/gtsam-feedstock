@@ -9,6 +9,10 @@ Package license: BSD-3-Clause
 
 Summary: GTSAM is a library of C++ classes that implement smoothing and mapping (SAM) in robotics and vision
 
+Development: https://github.com/borglab/gtsam
+
+Documentation: https://gtsam.org/
+
 Current build status
 ====================
 
