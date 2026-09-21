@@ -79,8 +79,11 @@ tests:
           - test -f ${PREFIX}/include/gtsam/base/types.h
       - if: win
         then:
+          # GTSAM installs its CMake package files flat under Library/CMake on
+          # Windows, not lib/cmake/<name>/ as on unix.
           - if not exist %LIBRARY_INC%\gtsam\base\types.h exit 1
-          - if not exist %LIBRARY_LIB%\cmake\GTSAM\GTSAMConfig.cmake exit 1
+          - if not exist %LIBRARY_PREFIX%\CMake\GTSAMConfig.cmake exit 1
+          - if not exist %LIBRARY_PREFIX%\CMake\gtwrap\gtwrapConfig.cmake exit 1
           - if not exist %LIBRARY_LIB%\gtsam.lib exit 1
           - if not exist %LIBRARY_BIN%\gtsam.dll exit 1
 
