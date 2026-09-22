@@ -61,6 +61,17 @@ tests:
       imports:
         - gtsam
       pip_check: false
+  - requirements:
+      run:
+        - cmake-package-check
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - libboost-devel
+        - eigen
+        - tbb-devel
+        - pybind11
+    script:
+      - cmake-package-check GTSAM gtwrap
   - files:
       recipe:
         - regression_test_25.py
@@ -74,16 +85,10 @@ tests:
       - if: not win
         then:
           - test -f ${PREFIX}/lib/libgtsam${SHLIB_EXT}
-          - test -f ${PREFIX}/lib/cmake/gtwrap/gtwrapConfig.cmake
-          - test -f ${PREFIX}/lib/cmake/GTSAM/GTSAMConfig.cmake
           - test -f ${PREFIX}/include/gtsam/base/types.h
       - if: win
         then:
-          # GTSAM installs its CMake package files flat under Library/CMake on
-          # Windows, not lib/cmake/<name>/ as on unix.
           - if not exist %LIBRARY_INC%\gtsam\base\types.h exit 1
-          - if not exist %LIBRARY_PREFIX%\CMake\GTSAMConfig.cmake exit 1
-          - if not exist %LIBRARY_PREFIX%\CMake\gtwrap\gtwrapConfig.cmake exit 1
           - if not exist %LIBRARY_LIB%\gtsam.lib exit 1
           - if not exist %LIBRARY_BIN%\gtsam.dll exit 1
 
