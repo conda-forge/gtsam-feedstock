@@ -15,6 +15,7 @@ cmake ^
     -DGTSAM_BUILD_WITH_WERROR=OFF ^
     -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF ^
     -DGTSAM_BUILD_TIMING_ALWAYS=OFF ^
+    -DGTSAM_SINGLE_TEST_EXE=OFF ^
     -DBoost_LIBRARYDIR:FILEPATH="%LIBRARY_PREFIX%\lib" ^
     -DBoost_INCLUDEDIR:FILEPATH="%LIBRARY_PREFIX%\include" ^
     -DBoost_USE_STATIC_LIBS:BOOL=OFF ^
@@ -39,4 +40,8 @@ if errorlevel 1 exit 1
 copy python\gtsam_unstable\gtsam_unstable*.pyd "%SP_DIR%\gtsam_unstable\"
 if errorlevel 1 exit 1
 
-@rem ninja check
+ninja all.tests
+if errorlevel 1 exit 1
+
+ctest --output-on-failure
+if errorlevel 1 exit 1

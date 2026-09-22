@@ -13,6 +13,7 @@ source:
   patches:
     - fix-metis-partition-label-order.patch
     - fix-link-threads.patch
+    - fix-gtwrap-cmake-config-location.patch
     - if: win
       then:
         - fix-python-build-win.patch
@@ -71,10 +72,7 @@ tests:
         - tbb-devel
         - pybind11
     script:
-      # gtwrap is left out: on Windows its config installs to
-      # Library/CMake/gtwrap/, which is not one of the locations find_package
-      # searches, so it is not discoverable there.
-      - cmake-package-check GTSAM
+      - cmake-package-check GTSAM gtwrap
   - files:
       recipe:
         - regression_test_25.py
