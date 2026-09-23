@@ -1,0 +1,23 @@
+The gtwrap CMake config is installed to <prefix>/CMake/gtwrap/ on Windows.
+CMake searches <prefix>/CMake/ but not a package subdirectory below it, so
+find_package(gtwrap) can never succeed there. GTSAM's own config only works
+because it lands flat in <prefix>/CMake/.
+
+lib/cmake/<name>/ is searched on every platform including Windows, so the
+special case is unnecessary. Submitted upstream.
+
+--- a/wrap/CMakeLists.txt
++++ b/wrap/CMakeLists.txt
+@@ -10,11 +10,7 @@
+ gtwrap_get_python_version(${WRAP_PYTHON_VERSION})
+ 
+ # Set the variables to be used for the cmake config file.
+-if(WIN32 AND NOT CYGWIN)
+-  set(INSTALL_CMAKE_DIR CMake/${PROJECT_NAME})
+-else()
+-  set(INSTALL_CMAKE_DIR lib/cmake/${PROJECT_NAME})
+-endif()
++set(INSTALL_CMAKE_DIR lib/cmake/${PROJECT_NAME})
+ 
+ set(INSTALL_LIB_DIR lib/${PROJECT_NAME})
+ set(INSTALL_BIN_DIR bin/${PROJECT_NAME})

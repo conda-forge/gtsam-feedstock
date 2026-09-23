@@ -30,6 +30,10 @@ new_pose = gtsam.Pose3(np.eye(4))
 graph.add(gtsam.PriorFactorPose3(pose_key, new_pose, gtsam.noiseModel.Diagonal.Sigmas(np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.1]))))
 
 imu_accum = gtsam.PreintegratedImuMeasurements(gtsam.PreintegrationParams(np.asarray([0, 0, 9.81])))
+# Integrate at least one measurement: with an empty buffer deltaTij is 0 and
+# preintMeasCov() is exactly zero, which gives the ImuFactor an infinite
+# information matrix and makes the linear system indeterminate.
+imu_accum.integrateMeasurement(np.asarray([0.0, 0.0, -9.81]), np.zeros(3), 0.01)
 predicted_nav_state = imu_accum.predict(gtsam.NavState(current_pose, current_vel), current_bias)
 imu_factor = gtsam.ImuFactor(pose_key-1, vel_key-1, pose_key, vel_key, bias_key, imu_accum)
 graph.add(imu_factor)
@@ -43,3 +47,8 @@ graph.add(bias_factor)
 
 isam = gtsam.ISAM2(gtsam.ISAM2Params())
 result = isam.update(graph, initial_estimate)
+estimate = isam.calculateEstimate()
+assert estimate.size() == initial_estimate.size()
+for key in initial_estimate.keys():
+    assert estimate.exists(key)
+print("gtsam regression test 25: OK")
