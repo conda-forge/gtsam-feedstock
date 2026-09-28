@@ -1,0 +1,21 @@
+cephes-gtsam finds libm with find_library(MATH_LIBRARY m) and links the
+resulting absolute path. That path points into the sysroot of the build
+environment and is exported verbatim in GTSAM-exports.cmake, so every
+downstream project linking gtsam fails with "libm.so ... missing and no known
+rule to make it". Link libm by name instead.
+
+diff --git a/gtsam/3rdparty/cephes/CMakeLists.txt b/gtsam/3rdparty/cephes/CMakeLists.txt
+index d2c2432..6952964 100644
+--- a/gtsam/3rdparty/cephes/CMakeLists.txt
++++ b/gtsam/3rdparty/cephes/CMakeLists.txt
+@@ -41,7 +41,9 @@ add_library(cephes-gtsam ${GTSAM_LIBRARY_TYPE} ${CEPHES_SOURCES})
+ # libSystem already).
+ find_library(MATH_LIBRARY m)
+ if(MATH_LIBRARY)
+-  target_link_libraries(cephes-gtsam PUBLIC ${MATH_LIBRARY})
++  # Link by name: the absolute path found here points into the build sysroot
++  # and would be exported as-is in GTSAM-exports.cmake, breaking consumers.
++  target_link_libraries(cephes-gtsam PUBLIC m)
+ endif()
+ 
+ # Add include directory (aka headers)

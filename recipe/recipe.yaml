@@ -14,6 +14,7 @@ source:
     - fix-metis-partition-label-order.patch
     - fix-link-threads.patch
     - fix-gtwrap-cmake-config-location.patch
+    - fix-cephes-libm-absolute-path.patch
     - if: win
       then:
         - fix-python-build-win.patch
