@@ -4,6 +4,11 @@ Threads::Threads. On glibc older than 2.34 the pthread symbols are not folded
 into libc, so linking testPriorityScheduler fails with undefined references to
 pthread_create/pthread_join. No-op where pthread already lives in libc.
 
+Linking Threads::Threads publicly also requires GTSAMConfig.cmake to find
+Threads, otherwise find_package(GTSAM) fails for consumers that do not call
+find_package(Threads) themselves. Backport of borglab/gtsam@d594caa761
+(borglab/gtsam#2824).
+
 --- a/gtsam/CMakeLists.txt
 +++ b/gtsam/CMakeLists.txt
 @@ -186,6 +186,11 @@
@@ -18,3 +23,17 @@ pthread_create/pthread_join. No-op where pthread already lives in libc.
  if(GTSAM_USE_SYSTEM_CCOLAMD)
    target_compile_definitions(gtsam PRIVATE GTSAM_USE_SYSTEM_CCOLAMD)
    target_link_libraries(gtsam PRIVATE SuiteSparse::CCOLAMD)
+diff --git a/cmake/Config.cmake.in b/cmake/Config.cmake.in
+index c9abd3a..7c7d26d 100644
+--- a/cmake/Config.cmake.in
++++ b/cmake/Config.cmake.in
+@@ -31,6 +31,9 @@ if(@GTSAM_USE_TBB@)
+     find_dependency(TBB 4.4 COMPONENTS tbb tbbmalloc)
+ endif()
+ 
++# gtsam links Threads::Threads publicly (std::thread on glibc < 2.34).
++find_dependency(Threads)
++
+ if(@GTSAM_USE_SYSTEM_EIGEN@)
+ find_dependency(Eigen3 REQUIRED)
+ endif()
