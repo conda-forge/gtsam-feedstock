@@ -1,21 +1,28 @@
-cephes-gtsam finds libm with find_library(MATH_LIBRARY m) and links the
-resulting absolute path. That path points into the sysroot of the build
-environment and is exported verbatim in GTSAM-exports.cmake, so every
-downstream project linking gtsam fails with "libm.so ... missing and no known
-rule to make it". Link libm by name instead.
+The bundled gtsam/3rdparty/cephes/CMakeLists.txt links cephes-gtsam against the
+absolute path returned by find_library(MATH_LIBRARY m). That path points into
+the sysroot of the build environment and is exported as is in
+GTSAM-exports.cmake, so every downstream project linking gtsam fails to link
+libm. Override the exported link interface in cmake/HandleCephes.cmake, as it
+already does for the include directories, so that the vendored code is left
+untouched. cephes-gtsam itself still links the absolute path, so it keeps its
+NEEDED entry for libm.
 
-diff --git a/gtsam/3rdparty/cephes/CMakeLists.txt b/gtsam/3rdparty/cephes/CMakeLists.txt
-index d2c2432..6952964 100644
---- a/gtsam/3rdparty/cephes/CMakeLists.txt
-+++ b/gtsam/3rdparty/cephes/CMakeLists.txt
-@@ -41,7 +41,9 @@ add_library(cephes-gtsam ${GTSAM_LIBRARY_TYPE} ${CEPHES_SOURCES})
- # libSystem already).
- find_library(MATH_LIBRARY m)
- if(MATH_LIBRARY)
--  target_link_libraries(cephes-gtsam PUBLIC ${MATH_LIBRARY})
-+  # Link by name: the absolute path found here points into the build sysroot
-+  # and would be exported as-is in GTSAM-exports.cmake, breaking consumers.
-+  target_link_libraries(cephes-gtsam PUBLIC m)
- endif()
+diff --git a/cmake/HandleCephes.cmake b/cmake/HandleCephes.cmake
+index 269952831..8ac9a1183 100644
+--- a/cmake/HandleCephes.cmake
++++ b/cmake/HandleCephes.cmake
+@@ -12,6 +12,14 @@ set_property(TARGET cephes-gtsam PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+   $<BUILD_INTERFACE:${GTSAM_SOURCE_DIR}/gtsam/3rdparty/cephes>
+   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/gtsam/3rdparty/cephes/>)
  
- # Add include directory (aka headers)
++# The bundled CMakeLists links the absolute path returned by
++# find_library(MATH_LIBRARY m). That path is exported as is, so consumers of
++# GTSAMConfig.cmake try to link a libm.so that only exists on the build machine
++# (e.g. the sysroot of a conda build environment). Export libm by name instead.
++if(MATH_LIBRARY)
++  set_property(TARGET cephes-gtsam PROPERTY INTERFACE_LINK_LIBRARIES m)
++endif()
++
+ list(APPEND GTSAM_EXPORTED_TARGETS cephes-gtsam)
+ 
+ add_library(cephes-gtsam-if INTERFACE)
