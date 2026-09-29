@@ -14,13 +14,14 @@ source:
     - fix-metis-partition-label-order.patch
     - fix-link-threads.patch
     - fix-gtwrap-cmake-config-location.patch
+    - fix-cephes-libm-absolute-path.patch
     - if: win
       then:
         - fix-python-build-win.patch
         - fix-boost.patch
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -73,6 +74,28 @@ tests:
         - pybind11
     script:
       - cmake-package-check GTSAM gtwrap
+  # cmake-package-check only configures. Build, link and run the upstream CMake
+  # example to catch broken link interfaces exported in GTSAMConfig.cmake and
+  # GTSAM-exports.cmake.
+  - files:
+      source:
+        - cmake/example_cmake_find_gtsam/
+    requirements:
+      run:
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - cmake
+        - ninja
+        - libboost-devel
+        - eigen
+        - tbb-devel
+    script:
+      - cmake -S cmake/example_cmake_find_gtsam -B build -GNinja -DCMAKE_BUILD_TYPE=Release
+      - cmake --build build
+      - if: build_platform == target_platform and not win
+        then: ./build/example
+      - if: win
+        then: build\example.exe
   - files:
       recipe:
         - regression_test_25.py
