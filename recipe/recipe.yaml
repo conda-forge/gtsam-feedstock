@@ -21,7 +21,7 @@ source:
         - fix-boost.patch
 
 build:
-  number: 1
+  number: 2
 
 requirements:
   build:
@@ -110,12 +110,10 @@ tests:
         then:
           - test -f ${PREFIX}/lib/libgtsam${SHLIB_EXT}
           - test -f ${PREFIX}/include/gtsam/base/types.h
-      - if: win
-        then:
+        else:
           - if not exist %LIBRARY_INC%\gtsam\base\types.h exit 1
           - if not exist %LIBRARY_LIB%\gtsam.lib exit 1
           - if not exist %LIBRARY_BIN%\gtsam.dll exit 1
-
 about:
   homepage: https://github.com/borglab/gtsam
   summary: GTSAM is a library of C++ classes that implement smoothing and mapping (SAM) in robotics and vision
