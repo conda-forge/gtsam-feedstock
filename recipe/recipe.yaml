@@ -15,6 +15,7 @@ source:
     - fix-link-threads.patch
     - fix-gtwrap-cmake-config-location.patch
     - fix-cephes-libm-absolute-path.patch
+    - fix-python-development-module.patch
     - if: win
       then:
         - fix-python-build-win.patch

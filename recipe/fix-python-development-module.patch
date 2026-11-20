@@ -1,0 +1,43 @@
+Only require the Python Development.Module component, not Development.Embed.
+
+GTSAM only builds Python extension modules, which must not link libpython.
+Requesting the full `Development` component also requires Development.Embed,
+i.e. libpython. Starting with Python 3.15, conda-forge ships libpython in a
+separate `libpython` package that is not installed with `python`, so
+find_package(Python3 COMPONENTS Interpreter Development) fails with
+"Cannot find Python3 interpreter". pybind11 itself already only requires
+Development.Module.
+
+diff -ru a/cmake/HandlePython.cmake b/cmake/HandlePython.cmake
+--- a/cmake/HandlePython.cmake
++++ b/cmake/HandlePython.cmake
+@@ -22,7 +22,7 @@
+     else()
+       # Get info about the Python3 interpreter
+       # https://cmake.org/cmake/help/latest/module/FindPython3.html#module:FindPython3
+-      find_package(Python3 COMPONENTS Interpreter Development)
++      find_package(Python3 COMPONENTS Interpreter Development.Module)
+ 
+       if(NOT ${Python3_FOUND})
+         message(
+diff -ru a/wrap/cmake/GtwrapUtils.cmake b/wrap/cmake/GtwrapUtils.cmake
+--- a/wrap/cmake/GtwrapUtils.cmake
++++ b/wrap/cmake/GtwrapUtils.cmake
+@@ -17,7 +17,7 @@
+   else()
+     # Get info about the Python interpreter
+     # https://cmake.org/cmake/help/latest/module/FindPython.html#module:FindPython
+-    find_package(Python COMPONENTS Interpreter Development)
++    find_package(Python COMPONENTS Interpreter Development.Module)
+ 
+     if(NOT ${Python_FOUND})
+       message(
+@@ -95,7 +95,7 @@
+     # Find the Python that best matches the python version specified.
+     find_package(
+       Python ${WRAP_PYTHON_VERSION}
+-      COMPONENTS Interpreter Development
++      COMPONENTS Interpreter Development.Module
+       EXACT)
+   endif()
+ 
